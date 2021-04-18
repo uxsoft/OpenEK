@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenEK", "OpenEK\OpenEK.csproj", "{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenEK.API", "OpenEK.API\OpenEK.API.csproj", "{32B72911-EF9E-49C6-A287-483451BAAEC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
