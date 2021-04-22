@@ -11,6 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Update="UsbDll.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

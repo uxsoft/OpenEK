@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>openek.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="openek.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="openek.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fonderie.INPC.Generator" Version="1.0.1" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenEK.API\OpenEK.API.csproj" />
+  </ItemGroup>
+
+</Project>

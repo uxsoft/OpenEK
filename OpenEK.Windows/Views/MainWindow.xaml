@@ -1,0 +1,43 @@
+﻿<Window x:Class="OpenEK.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OpenEK.Windows.Views"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Background="#E9E9E9"
+        Icon="pack://application:,,,/OpenEk.Windows;component/openek.ico"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <local:Statistic Grid.Row="0" Grid.Column="0" Margin="6" x:Name="lblCpu" Title="CPU" Value="{Binding Cpu}"/>
+        <local:Statistic Grid.Row="0" Grid.Column="1" Margin="6" x:Name="lblGpu" Title="GPU" Value="{Binding Gpu}"/>
+        <local:Statistic Grid.Row="0" Grid.Column="2" Margin="6" x:Name="lblPump" Title="PUMP" Value="{Binding Pump}"/>
+
+        <local:Statistic Grid.Row="1" Grid.Column="0" Margin="6" x:Name="lblFan1" Title="{Binding Fan1Title}" Value="{Binding Fan1Value}"/>
+        <local:Statistic Grid.Row="1" Grid.Column="1" Margin="6" x:Name="lblFan2" Title="{Binding Fan2Title}" Value="{Binding Fan2Value}"/>
+        <local:Statistic Grid.Row="1" Grid.Column="2" Margin="6" x:Name="lblFan3" Title="{Binding Fan3Title}" Value="{Binding Fan3Value}"/>
+        <local:Statistic Grid.Row="1" Grid.Column="3" Margin="6" x:Name="lblFan4" Title="{Binding Fan4Title}" Value="{Binding Fan4Value}"/>
+        
+        <local:ChartView Grid.Row="2" Grid.ColumnSpan="4"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="6" Text="Target PWM"/>
+        <ui:NumberBox Grid.Row="3" Grid.Column="1" Margin="6" Name="txtTargetPwm"/>
+        <Button Grid.Row="3" Grid.Column="2" Margin="6" Name="btnSetPumpPwm" Content="Set Pump" VerticalAlignment="Top" HorizontalAlignment="Center" Click="btnSetPumpPwm_Click"/>
+        <Button Grid.Row="3" Grid.Column="3" Margin="6" Name="btnSetFanPwm" Content="Set Fans" VerticalAlignment="Top" HorizontalAlignment="Center" Click="btnSetFanPwm_Click"/>
+    </Grid>
+</Window>

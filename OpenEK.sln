@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenEK", "OpenEK\OpenEK.csproj", "{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31213.239
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenEK.API", "OpenEK.API\OpenEK.API.csproj", "{32B72911-EF9E-49C6-A287-483451BAAEC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenEK.API", "OpenEK.API\OpenEK.API.csproj", "{32B72911-EF9E-49C6-A287-483451BAAEC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenEK.Windows", "OpenEK.Windows\OpenEK.Windows.csproj", "{3ED32291-9A81-4DF3-982B-463768AE01C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD16E82F-D827-49AB-9033-6EBBB6C5FBB1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32B72911-EF9E-49C6-A287-483451BAAEC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ED32291-9A81-4DF3-982B-463768AE01C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED32291-9A81-4DF3-982B-463768AE01C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED32291-9A81-4DF3-982B-463768AE01C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED32291-9A81-4DF3-982B-463768AE01C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECA3177D-4471-4087-9E32-183B865C8054}
 	EndGlobalSection
 EndGlobal

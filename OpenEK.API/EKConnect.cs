@@ -140,33 +140,28 @@ namespace OpenEK.API
         }
 
         [HandleProcessCorruptedStateExceptions]
-        public Dictionary<int, FanData> GetFans(bool includePump = false)
+        public Dictionary<byte, FanData> GetFans(bool includePump = false)
         {
-            return Enumerable
+            var fans = Enumerable
                 .Range(1, includePump ? 6 : 5)
-                .Select(i => (index: i, data: GetFan(i)))
-                .Where(item => item.data != null)
-                //.Where(item => item.data.Model == 2)
-                .ToDictionary(item => item.index, item => item.data!);
+                .Select(i => (index: i, data: GetFan(i)));
+
+            return fans
+                .Where(item => item.data != null && item.data.Speed > 0)
+                .ToDictionary(item => (byte)item.index, item => item.data!);
         }
 
         [HandleProcessCorruptedStateExceptions]
-        public int SetFan(byte port, ushort pwm)
+        public int SetFan(FanData fan, byte port, ushort pwm)
         {
             try
             {
                 if (!IsConnected && Thread.CurrentThread.IsAlive)
                     return 0;
 
-                var data = GetFan(port);
-
-                if (data == null)
-                    return -1;
-
-                return PInvoke.SetFanData(port, data.Model, data.RatedSpeed, data.Speed, data.RatedPower, data.Power,
-                    data.Load, pwm);
+                return PInvoke.SetFanData(port, fan.Model, fan.RatedSpeed, fan.Speed, fan.RatedPower, fan.Power, fan.Load, pwm);
             }
-            catch (Exception ex)
+            catch
             {
                 return -1;
             }
@@ -225,21 +220,16 @@ namespace OpenEK.API
         /// <param name="pwm">Value between 0 and 100</param>
         /// <returns></returns>
         [HandleProcessCorruptedStateExceptions]
-        public int SetPump(ushort pwm)
+        public int SetPump(PumpData pump, ushort pwm)
         {
             if (!IsConnected)
                 return 0;
             try
             {
-                var data = GetPump();
-
-                if (data == null)
-                    return -1;
-
-                return PInvoke.SetPump(data.Model, data.RatedSpeed, data.Speed, data.RatedPower, data.Power, data.Load,
+                return PInvoke.SetPump(pump.Model, pump.RatedSpeed, pump.Speed, pump.RatedPower, pump.Power, pump.Load,
                     pwm);
             }
-            catch (Exception ex)
+            catch
             {
                 return -1;
             }
@@ -302,7 +292,7 @@ namespace OpenEK.API
                 if (!IsConnected)
                     return 0;
 
-                return PInvoke.SetSpecialLED(1, (byte) mode, color, speed, brightness, red, green, blue, 0, 0, 0, 0);
+                return PInvoke.SetSpecialLED(1, (byte)mode, color, speed, brightness, red, green, blue, 0, 0, 0, 0);
             }
             catch (Exception e)
             {
