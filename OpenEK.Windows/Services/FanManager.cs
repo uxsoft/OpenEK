@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using System.Threading.Tasks;
 using OpenEK.API;
+using System;
 
 namespace OpenEK
 {
@@ -9,11 +11,31 @@ namespace OpenEK
     {
         public static PumpData Pump { get; set; } = new PumpData();
         public static Dictionary<byte, FanData> Fans { get; set; } = new ();
+        public static Timer Timer { get; private set; } = new(1000) { AutoReset = true };
+        public static event EventHandler? DataUpdated;
+ 
+        static FanManager()
+        {
+            Timer.Elapsed += Timer_Elapsed;
+        }
 
-        public static void Update()
+        public static void Start()
+        {
+            Timer.Start();
+            _ = EkConnect.Instance.Reconnect();
+        }
+
+        public static void Stop()
+        {
+            Timer.Stop();
+            EkConnect.Instance.Disconnect();
+        }
+
+        static void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Fans = EkConnect.Instance.GetFans();
             Pump = EkConnect.Instance.GetPump() ?? new PumpData();
+            DataUpdated?.Invoke(sender, e);
         }
 
         public static async Task SetFans(ushort pwm)

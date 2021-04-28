@@ -30,17 +30,11 @@ namespace OpenEK.Windows.ViewModels
 
         public void Start()
         {
-            var timer = new Timer(1000)
-            {
-                AutoReset = true
-            };
-            timer.Elapsed += TimerOnElapsed;
-            timer.Start();
-
-            EkConnect.Instance.Reconnect();
+            FanManager.Start();
+            FanManager.DataUpdated += FanManager_DataUpdated;
         }
 
-        private async void TimerOnElapsed(object sender, ElapsedEventArgs e)
+        async void FanManager_DataUpdated(object? sender, EventArgs e)
         {
             HardwareMonitor.Update();
 
@@ -48,8 +42,6 @@ namespace OpenEK.Windows.ViewModels
             CpuTemperatureHistory.AddReading(tCpu);
             var tGpu = HardwareMonitor.GetGpuTemperature("GPU Core");
             GpuTemperatureHistory.AddReading(tGpu);
-
-            FanManager.Update();
 
             await FanManager.AdjustPump(tCpu);
             await FanManager.AdjustFans(tCpu);
@@ -59,10 +51,10 @@ namespace OpenEK.Windows.ViewModels
             Pump = $"{FanManager.Pump.Pwm} => {FanManager.Pump.Speed}rpm";
 
             var fanSetters = new Action<string, string>[] {
-                (t, v) => {Fan1Value = v; Fan1Title = t; },
-                (t, v) => {Fan2Value = v; Fan2Title = t; },
-                (t, v) => {Fan3Value = v; Fan3Title = t; },
-                (t, v) => {Fan4Value = v; Fan4Title = t; },
+                (t, v) => { Fan1Value = v; Fan1Title = t; },
+                (t, v) => { Fan2Value = v; Fan2Title = t; },
+                (t, v) => { Fan3Value = v; Fan3Title = t; },
+                (t, v) => { Fan4Value = v; Fan4Title = t; },
             };
 
             for (int i = 0; i < FanManager.Fans.Count; i++)
@@ -72,7 +64,6 @@ namespace OpenEK.Windows.ViewModels
 
                 setter($"FAN{fan.Key}", $"{fan.Value.Pwm} => {fan.Value.Speed}rpm");
             }
-
         }
     }
 }

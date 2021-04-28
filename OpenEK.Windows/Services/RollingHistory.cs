@@ -14,7 +14,5 @@ namespace OpenEK
             if (Readings.Count > 1 && Readings.Count > HistoryLength)
                 Readings.RemoveAt(0);
         }
-        
-
     }
 }

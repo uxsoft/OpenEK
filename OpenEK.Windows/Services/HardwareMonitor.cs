@@ -10,7 +10,6 @@ namespace OpenEK
         static HardwareMonitor()
         {
             Computer.Open();
-            
         }
 
         public static Computer Computer { get; } = new()
@@ -48,8 +47,6 @@ namespace OpenEK
             var sensor = cpu?.Sensors?.SingleOrDefault(s => 
                 s.SensorType == SensorType.Temperature && 
                 s.Name == sensorName);
-            
-            sensor.ValuesTimeWindow = TimeSpan.FromSeconds(1);
             
             return sensor?.Value ?? 0;
         }
