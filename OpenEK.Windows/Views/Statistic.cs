@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 
 namespace OpenEK.Windows.Views
 {
-    public partial class Statistic : UserControl
+    public class Statistic : Control
     {
-        public Statistic()
+        static Statistic()
         {
-            InitializeComponent();
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Statistic), new FrameworkPropertyMetadata(typeof(Statistic)));
         }
 
         #region DependencyProperty Title

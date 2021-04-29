@@ -10,18 +10,21 @@
     <Compile Update="Views\ChartView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Statistic.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Themes\Card.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Statistic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ChartView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Statistic.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

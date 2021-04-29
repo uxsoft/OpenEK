@@ -15,8 +15,8 @@ namespace OpenEK.Windows.ViewModels
         public ChartValues<ObservableValue> CpuTempNormalised { get; set; } = new();
         public ChartValues<ObservableValue> GpuTemp { get; set; } = new();
         public ChartValues<ObservableValue> GpuTempNormalised { get; set; } = new();
-        public ChartValues<ObservableValue> Fans { get; } = new();
-        public ChartValues<ObservableValue> Pump { get; set; } = new();
+        public ChartValues<ObservableValue> FanSpeed { get; } = new();
+        public ChartValues<ObservableValue> PumpSpeed { get; set; } = new();
 
         public ChartViewModel()
         {
@@ -27,6 +27,9 @@ namespace OpenEK.Windows.ViewModels
         {
             CpuTemp.AddAndCut(HardwareMonitor.GetCpuTemperature("Core Average"));
             GpuTemp.AddAndCut(HardwareMonitor.GetGpuTemperature("GPU Core"));
+
+            FanSpeed.AddAndCut(FanManager.Fans.Values.Average(f => f.Speed));
+            PumpSpeed.AddAndCut(FanManager.Pump.Speed);
         }
     }
 }
