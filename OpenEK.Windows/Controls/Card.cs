@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace OpenEK.Windows.Views
+namespace OpenEK.Windows.Controls
 {
     [ContentProperty("Content")]
     public class Card : Control

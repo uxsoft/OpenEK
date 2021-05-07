@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Fonderie;
-using OpenEK.API;
+using OpenEK.Core.Native;
 using Windows.Security.Cryptography.Core;
+using Microsoft.FSharp.Core;
 
 namespace OpenEK.Windows.ViewModels
 {
-    public partial class MainViewModel
+    public partial class DashboardViewModel
     {
         [GeneratedProperty] private string _cpu = "";
         [GeneratedProperty] private string _gpu = "";
@@ -24,17 +25,17 @@ namespace OpenEK.Windows.ViewModels
         [GeneratedProperty] private string _fan3Value = "";
         [GeneratedProperty] private string _fan4Title = "";
         [GeneratedProperty] private string _fan4Value = "";
-
+                   
         public RollingHistory CpuTemperatureHistory { get; set; } = new();
         public RollingHistory GpuTemperatureHistory { get; set; } = new();
 
         public void Start()
         {
-            FanManager.Start();
-            FanManager.DataUpdated += FanManager_DataUpdated;
+            EK.Manager.Start();
+            EK.Manager.DataUpdated += FanManager_DataUpdated;
         }
 
-        async void FanManager_DataUpdated(object? sender, EventArgs e)
+        void FanManager_DataUpdated(object? sender, Unit e)
         {
             HardwareMonitor.Update();
 
@@ -43,12 +44,9 @@ namespace OpenEK.Windows.ViewModels
             var tGpu = HardwareMonitor.GetGpuTemperature("GPU Core");
             GpuTemperatureHistory.AddReading(tGpu);
 
-            await FanManager.AdjustPump(tCpu);
-            await FanManager.AdjustFans(tCpu);
-
             Cpu = $"{tCpu:F1}°C";
             Gpu = $"{tGpu:F1}°C";
-            Pump = $"{FanManager.Pump.Pwm} => {FanManager.Pump.Speed}rpm";
+            Pump = $"{EK.Manager.Pump.Pwm} => {EK.Manager.Pump.Speed}rpm";
 
             var fanSetters = new Action<string, string>[] {
                 (t, v) => { Fan1Value = v; Fan1Title = t; },
@@ -57,9 +55,9 @@ namespace OpenEK.Windows.ViewModels
                 (t, v) => { Fan4Value = v; Fan4Title = t; },
             };
 
-            for (int i = 0; i < FanManager.Fans.Count; i++)
+            for (int i = 0; i < Math.Min(EK.Manager.Fans.Count, fanSetters.Length - 1); i++)
             {
-                var fan = FanManager.Fans.ElementAt(i);
+                var fan = EK.Manager.Fans.ElementAt(i);
                 var setter = fanSetters[i];
 
                 setter($"FAN{fan.Key}", $"{fan.Value.Pwm} => {fan.Value.Speed}rpm");

@@ -3,7 +3,7 @@ namespace OpenEK.API
     public class LedData
     {
         public byte Model;
-        public byte Mode;
+        public LedMode Mode;
         public byte Color;
         public byte Speed;
         public byte Brightness;
@@ -11,7 +11,7 @@ namespace OpenEK.API
         public byte Green;
         public byte Blue;
         public byte RgbReload;
-        public byte LastMode;
+        public LedMode LastMode;
         public byte LastColor;
         public byte LastSpd;
         public byte LastBrightness;

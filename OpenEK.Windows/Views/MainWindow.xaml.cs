@@ -1,43 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using OpenEK.API;
-using OpenEK.Windows.ViewModels;
+using Windows.UI;
 
-namespace OpenEK.Windows
+namespace OpenEK.Windows.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            var vm = new MainViewModel();
-            vm.Start();
-            DataContext = vm;
         }
 
-        private async void btnSetPumpPwm_Click(object sender, RoutedEventArgs e)
+        private void navigation_ItemInvoked(ModernWpf.Controls.NavigationView sender, ModernWpf.Controls.NavigationViewItemInvokedEventArgs args)
         {
-            await FanManager.SetPump((ushort)txtTargetPwm.Value);
-        }
+            var pageType = args.InvokedItem switch
+            {
+                "Dashboard" => typeof(DashboardView),
+                "Lights" => typeof(LightsView),
+                _ => typeof(UserControl)
+            };
 
-        private async void btnSetFanPwm_Click(object sender, RoutedEventArgs e)
-        {
-            await FanManager.SetFans((ushort)txtTargetPwm.Value);
+            Navigation.Header = args.InvokedItem;
+            ContentFrame.Navigate(pageType, null, args.RecommendedNavigationTransitionInfo);
         }
     }
 }

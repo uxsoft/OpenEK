@@ -7,10 +7,8 @@ using System.Threading;
 
 namespace OpenEK.API
 {
-    public class EkConnect
+    public class EKConnectBus
     {
-        public static EkConnect Instance { get; } = new();
-
         public bool IsConnected { get; private set; }
 
         [HandleProcessCorruptedStateExceptions]
@@ -251,7 +249,7 @@ namespace OpenEK.API
                 return new LedData
                 {
                     Model = buffer[0],
-                    Mode = buffer[1],
+                    Mode = (LedMode)buffer[1],
                     Color = buffer[2],
                     Speed = buffer[3],
                     Brightness = buffer[4],
@@ -259,7 +257,7 @@ namespace OpenEK.API
                     Green = buffer[6],
                     Blue = buffer[7],
                     RgbReload = buffer[8],
-                    LastMode = buffer[9],
+                    LastMode = (LedMode)buffer[9],
                     LastColor = buffer[10],
                     LastSpd = buffer[11],
                     LastBrightness = buffer[12],

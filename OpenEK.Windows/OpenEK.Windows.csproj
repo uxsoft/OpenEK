@@ -21,13 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accord.Statistics" Version="3.8.0" />
+    <PackageReference Include="ControlzEx" Version="5.0.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.2" />
     <PackageReference Include="Fonderie.INPC.Generator" Version="1.0.1" />
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="ModernWpfUI" Version="0.9.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenEK.API\OpenEK.API.csproj" />
+    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />
   </ItemGroup>
-
 </Project>
