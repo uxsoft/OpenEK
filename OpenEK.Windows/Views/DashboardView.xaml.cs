@@ -17,12 +17,12 @@ namespace OpenEK.Windows.Views
 
         private void btnSetPumpPwm_Click(object sender, RoutedEventArgs e)
         {
-            EK.Manager.Send(EkCommand.NewSetFansPwm((ushort) txtTargetPwm.Value));
+            EK.Manager.Send(EkCommand.NewSetPumpPwm((ushort) txtTargetPwm.Value));
         }
 
         private void btnSetFanPwm_Click(object sender, RoutedEventArgs e)
         {
-            EK.Manager.Send(EkCommand.NewSetPumpPwm((ushort) txtTargetPwm.Value));
+            EK.Manager.Send(EkCommand.NewSetFansPwm((ushort) txtTargetPwm.Value));
         }
     }
 }

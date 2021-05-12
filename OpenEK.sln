@@ -9,6 +9,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "OpenEK.Tests", "OpenEK.Test
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEK.Core", "OpenEK.Core\OpenEK.Core.fsproj", "{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEK.Console", "OpenEK.Console\OpenEK.Console.fsproj", "{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,26 @@ Global
 		{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}.Release|x64.Build.0 = Release|Any CPU
 		{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}.Release|x86.ActiveCfg = Release|Any CPU
 		{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}.Release|x86.Build.0 = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|arm64.Build.0 = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|x64.Build.0 = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Debug|x86.Build.0 = Debug|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|ARM.Build.0 = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|arm64.ActiveCfg = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|arm64.Build.0 = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|x64.ActiveCfg = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|x64.Build.0 = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBA4173D-CA52-4C9B-A2E0-82430BC5845D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

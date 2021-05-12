@@ -17,7 +17,7 @@
             PaneDisplayMode="LeftCompact" 
             IsTabStop="False" ItemInvoked="navigation_ItemInvoked">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard">
+                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard" IsSelected="True">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Glyph="&#xE9D2;"/>
                     </ui:NavigationViewItem.Icon>

@@ -10,17 +10,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Include="Native\DataTypes.fs" />
-      <Compile Include="Native\PInvoke.fs" />
-      <Compile Include="Native\EKConnectBus.fs" />
-      <Compile Include="Native\EKConnectManager.fs" />
       <None Include="UsbDll.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <Compile Include="EK\DataTypes.fs" />
+      <Compile Include="EK\PInvoke.fs" />
+      <Compile Include="EK\EKConnectBus.fs" />
+      <Compile Include="EK\EKConnectManager.fs" />
+      <Compile Include="EK\EK.fs" />
+      <Compile Include="HwInfo\HardwareMonitor.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Update="FSharp.Core" Version="5.0.1" />
+      <PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenEK
+namespace OpenEK.Windows.Services
 {
     public static class FanCurve
     {
