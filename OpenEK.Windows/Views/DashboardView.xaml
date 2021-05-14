@@ -23,10 +23,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-
-
-
-
         <ctl:Statistic Grid.Row="0" Grid.Column="1" Margin="6" x:Name="lblCpu" Title="CPU" Value="{Binding Cpu}"/>
         <ctl:Statistic Grid.Row="0" Grid.Column="2" Margin="6" x:Name="lblGpu" Title="GPU" Value="{Binding Gpu}"/>
         <ctl:Statistic Grid.Row="0" Grid.Column="4" Margin="6" x:Name="lblPump" Title="PUMP" Value="{Binding Pump}"/>

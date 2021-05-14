@@ -205,7 +205,7 @@ type EKConnectBus() =
                 else
                     Some
                         { Model = buffer.[0]
-                          Mode = LanguagePrimitives.EnumOfValue buffer.[1]
+                          Mode = LanguagePrimitives.EnumOfValue (int buffer.[1])
                           Color = buffer.[2]
                           Speed = buffer.[3]
                           Brightness = buffer.[4]
@@ -213,7 +213,7 @@ type EKConnectBus() =
                           Green = buffer.[6]
                           Blue = buffer.[7]
                           RgbReload = buffer.[8]
-                          LastMode = LanguagePrimitives.EnumOfValue buffer.[9]
+                          LastMode = LanguagePrimitives.EnumOfValue (int buffer.[9])
                           LastColor = buffer.[10]
                           LastSpd = buffer.[11]
                           LastBrightness = buffer.[12]
@@ -227,6 +227,8 @@ type EKConnectBus() =
             Console.WriteLine(e)
             None
 
+    ///
+    /// 
     [<HandleProcessCorruptedStateExceptions>]
     member x.SetLed (mode: LedMode) (speed: byte) (brightness: byte) (red: byte) (green: byte) (blue: byte) =
         try

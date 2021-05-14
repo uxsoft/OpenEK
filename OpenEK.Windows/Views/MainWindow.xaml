@@ -4,32 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:views="clr-namespace:OpenEK.Windows.Views"
         mc:Ignorable="d"
         Background="#E9E9E9"
         Icon="pack://application:,,,/OpenEk.Windows;component/openek.ico"
         Title="MainWindow" Height="450" Width="800">
 
     <Grid>
-        <ui:NavigationView 
-            Name="Navigation" 
+        <ui:NavigationView
+            Name="Navigation"
             Grid.Row="0"
-            Header="Dashboard" 
-            PaneDisplayMode="LeftCompact" 
-            IsTabStop="False" ItemInvoked="navigation_ItemInvoked">
+            Header="Dashboard"
+            PaneDisplayMode="LeftCompact"
+            IsTabStop="False"
+            ItemInvoked="Navigation_OnItemInvoked">
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard" IsSelected="True">
+                <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE9D2;"/>
+                        <ui:FontIcon Glyph="&#xE9D2;" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="Lights" Tag="Lights" >
+                <ui:NavigationViewItem Content="Lights" Tag="Lights">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Glyph="&#xE793;"/>
+                        <ui:FontIcon Glyph="&#xE793;" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
-            <ui:Frame x:Name="ContentFrame" />
+            <Grid>
+                <views:DashboardView x:Name="DashboardView"/>
+                <views:LightsView x:Name="LightsView" Visibility="Collapsed"/>
+            </Grid>
         </ui:NavigationView>
     </Grid>
-   
 </Window>

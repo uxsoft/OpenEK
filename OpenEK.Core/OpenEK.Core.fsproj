@@ -19,6 +19,7 @@
       <Compile Include="EK\EKConnectManager.fs" />
       <Compile Include="EK\EK.fs" />
       <Compile Include="HwInfo\HardwareMonitor.fs" />
+      <Compile Include="HwInfo\Fans.fs" />
     </ItemGroup>
 
     <ItemGroup>

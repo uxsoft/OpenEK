@@ -25,10 +25,10 @@ namespace OpenEK.Windows.ViewModels
 
         public ChartViewModel()
         {
-            EK.Manager.DataUpdated += FanManager_DataUpdated;
+            EK.Manager.OnDataUpdated += FanManagerOnDataUpdated;
         }
 
-        private void FanManager_DataUpdated(object? sender, Unit e)
+        private void FanManagerOnDataUpdated(object? sender, Unit e)
         {
             CpuTemp.AddAndCut(HardwareMonitor.GetCpuTemperature("CPU Package")); //Core Average
             GpuTemp.AddAndCut(HardwareMonitor.GetGpuTemperature("GPU Core"));

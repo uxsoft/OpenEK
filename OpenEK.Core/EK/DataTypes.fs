@@ -17,16 +17,16 @@ type LedColor =
     struct end
 
 type LedMode =
-    | Off = 0uy
-    | Fixed = 1uy
-    | Breathing = 2uy
-    | Fading = 3uy
-    | Marquee = 4uy
-    | CoveringMarquee = 5uy
-    | Pulse = 6uy
-    | SpectrumWave = 7uy
-    | Alternating = 8uy
-    | Candle = 9uy
+    | Off = 0
+    | Fixed = 1
+    | Breathing = 2
+    | Fading = 3
+    | Marquee = 4
+    | CoveringMarquee = 5
+    | Pulse = 6
+    | SpectrumWave = 7
+    | Alternating = 8
+    | Candle = 9
 
 type LedData =
     { Model: byte

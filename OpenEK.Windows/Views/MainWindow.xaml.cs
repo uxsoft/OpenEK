@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using Windows.UI;
+using ModernWpf.Controls;
 
 namespace OpenEK.Windows.Views
 {
@@ -9,19 +11,23 @@ namespace OpenEK.Windows.Views
         public MainWindow()
         {
             InitializeComponent();
+            Navigation.SelectedItem = "Dashboard";
         }
 
-        private void navigation_ItemInvoked(ModernWpf.Controls.NavigationView sender, ModernWpf.Controls.NavigationViewItemInvokedEventArgs args)
+        private void Navigation_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            var pageType = args.InvokedItem switch
+            var views = new UserControl[] { DashboardView, LightsView };
+            UserControl selectedView = args.InvokedItem switch
             {
-                "Dashboard" => typeof(DashboardView),
-                "Lights" => typeof(LightsView),
-                _ => typeof(UserControl)
+                "Dashboard" => DashboardView,
+                "Lights" => LightsView,
+                _ => DashboardView
             };
 
             Navigation.Header = args.InvokedItem;
-            ContentFrame.Navigate(pageType, null, args.RecommendedNavigationTransitionInfo);
+            
+            foreach (var view in views) 
+                view.Visibility = view != selectedView ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }
