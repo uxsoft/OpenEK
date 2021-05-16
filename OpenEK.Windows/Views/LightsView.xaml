@@ -18,7 +18,7 @@
             Margin="16"
             HorizontalAlignment="Stretch"
             ItemsSource="{Binding Effects}"
-            SelectedItem="{Binding SelectedEffect}" />
+            SelectedItem="{Binding SelectedEffect.Value}" />
         
         <Label
             Target="{Binding ElementName=ctlColor}"
@@ -29,7 +29,7 @@
             Margin="16"
             VerticalAlignment="Top"
             DisplayColorAndName="True"
-            SelectedColor="{Binding SelectedColor}" />
+            SelectedColor="{Binding SelectedColor.Value}" />
         
         <Label
             Target="{Binding ElementName=ctlBrightness}"
@@ -38,7 +38,7 @@
         <Slider 
             Name="ctlBrightness"
             Margin="16,0,16,32"
-            Value="{Binding SelectedBrightness}"
+            Value="{Binding SelectedBrightness.Value}"
             Minimum="0"
             Maximum="100"
             AutoToolTipPlacement="TopLeft"
@@ -59,7 +59,7 @@
             Minimum="0"
             Maximum="100"
             AutoToolTipPlacement="TopLeft"
-            Value="{Binding SelectedSpeed}" 
+            Value="{Binding SelectedSpeed.Value}" 
             Delay="500"
             TickFrequency="10"
             TickPlacement="Both"

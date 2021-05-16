@@ -28,20 +28,50 @@
             Margin="6" 
             x:Name="lblCpu" 
             Title="CPU" 
-            Value="{Binding Cpu}"/>
+            Value="{Binding CpuStatus.Value}"/>
         <ctl:Statistic 
             x:Name="lblGpu" 
             Grid.Row="0" 
             Grid.Column="1" 
             Margin="6" 
             Title="GPU" 
-            Value="{Binding Gpu}"/>
-        <ctl:Statistic Grid.Row="0" Grid.Column="3" Margin="6" x:Name="lblPump" Title="PUMP" Value="{Binding Pump}"/>
+            Value="{Binding GpuStatus.Value}"/>
+        <ctl:Statistic 
+            x:Name="lblPump"
+            Grid.Row="0" 
+            Grid.Column="3" 
+            Margin="6" 
+            Title="PUMP" 
+            Value="{Binding PumpStatus.Value}"/>
 
-        <ctl:Statistic Grid.Row="1" Grid.Column="0" Margin="6" x:Name="lblFan1" Title="{Binding Fan1Title}" Value="{Binding Fan1Value}"/>
-        <ctl:Statistic Grid.Row="1" Grid.Column="1" Margin="6" x:Name="lblFan2" Title="{Binding Fan2Title}" Value="{Binding Fan2Value}"/>
-        <ctl:Statistic Grid.Row="1" Grid.Column="2" Margin="6" x:Name="lblFan3" Title="{Binding Fan3Title}" Value="{Binding Fan3Value}"/>
-        <ctl:Statistic Grid.Row="1" Grid.Column="3" Margin="6" x:Name="lblFan4" Title="{Binding Fan4Title}" Value="{Binding Fan4Value}"/>
+        <ctl:Statistic 
+            x:Name="lblFan1" 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Margin="6" 
+            Title="{Binding Fan1Label.Value}" 
+            Value="{Binding Fan1Status.Value}"/>
+        <ctl:Statistic 
+            x:Name="lblFan2"
+            Grid.Row="1" 
+            Grid.Column="1" 
+            Margin="6" 
+            Title="{Binding Fan2Label.Value}" 
+            Value="{Binding Fan2Status.Value}"/>
+        <ctl:Statistic 
+            x:Name="lblFan3" 
+            Grid.Row="1" 
+            Grid.Column="2" 
+            Margin="6" 
+            Title="{Binding Fan3Label.Value}" 
+            Value="{Binding Fan3Status.Value}"/>
+        <ctl:Statistic 
+            x:Name="lblFan4" 
+            Grid.Row="1" 
+            Grid.Column="3" 
+            Margin="6" 
+            Title="{Binding Fan4Label.Value}" 
+            Value="{Binding Fan4Status.Value}"/>
 
         <views:ChartView Grid.Row="2" Grid.ColumnSpan="4" Margin="0,16,0,0"/>
 
@@ -50,7 +80,7 @@
             <ui:AutoSuggestBox 
                 Margin="0,6,0,0" 
                 HorizontalAlignment="Stretch" 
-                Text="{Binding FanPwm, Mode=TwoWay}" 
+                Text="{Binding FanPwm.Value, Mode=TwoWay}" 
                 ItemsSource="{Binding PwmSteps}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1" Margin="16">
@@ -58,12 +88,12 @@
             <ui:AutoSuggestBox
                 Margin="0,6,0,0" 
                 HorizontalAlignment="Stretch" 
-                Text="{Binding PumpPwm, Mode=TwoWay}" 
+                Text="{Binding PumpPwm.Value, Mode=TwoWay}" 
                 ItemsSource="{Binding PwmSteps}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="2" Margin="16">
             <Label Content="Auto Adjust"/>
-            <CheckBox Margin="0,6,0,0" IsChecked="{Binding AutoFanAdjust}"/>
+            <CheckBox Margin="0,6,0,0" IsChecked="{Binding AutoFanAdjust.Value}"/>
         </StackPanel>
     </Grid>
 </UserControl>
