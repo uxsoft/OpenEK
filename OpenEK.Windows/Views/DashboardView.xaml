@@ -22,8 +22,20 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ctl:Statistic Grid.Row="0" Grid.Column="0" Margin="6" x:Name="lblCpu" Title="CPU" Value="{Binding Cpu}"/>
-        <ctl:Statistic Grid.Row="0" Grid.Column="1" Margin="6" x:Name="lblGpu" Title="GPU" Value="{Binding Gpu}"/>
+        <ctl:Statistic 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Margin="6" 
+            x:Name="lblCpu" 
+            Title="CPU" 
+            Value="{Binding Cpu}"/>
+        <ctl:Statistic 
+            x:Name="lblGpu" 
+            Grid.Row="0" 
+            Grid.Column="1" 
+            Margin="6" 
+            Title="GPU" 
+            Value="{Binding Gpu}"/>
         <ctl:Statistic Grid.Row="0" Grid.Column="3" Margin="6" x:Name="lblPump" Title="PUMP" Value="{Binding Pump}"/>
 
         <ctl:Statistic Grid.Row="1" Grid.Column="0" Margin="6" x:Name="lblFan1" Title="{Binding Fan1Title}" Value="{Binding Fan1Value}"/>

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
-using Fonderie;
 using Microsoft.FSharp.Core;
+using OpenEK.Core;
 using OpenEK.Core.Native;
 using OpenEK.Windows.Extensions;
 
 namespace OpenEK.Windows.ViewModels
 {
-    public partial class LightsViewModel
+    public class LightsViewModel
     {
         public LightsViewModel()
         {
@@ -20,7 +20,44 @@ namespace OpenEK.Windows.ViewModels
                 ManagerOnOnConnected(this, null);
             else EK.Manager.OnConnected += ManagerOnOnConnected;
 
-            PropertyChanged += OnPropertyChanged;
+            (SelectedBrightness as INotifyPropertyChanged).PropertyChanged += SelectedBrightness_PropertyChanged;
+            (SelectedColor as INotifyPropertyChanged).PropertyChanged += SelectedColor_PropertyChanged;
+            (SelectedEffect as INotifyPropertyChanged).PropertyChanged += SelectedEffect_PropertyChanged;
+            (SelectedSpeed as INotifyPropertyChanged).PropertyChanged += SelectedSpeed_PropertyChanged;
+        }
+        public List<string> Effects { get; set; }
+        public State<string> SelectedEffect { get; set; } = new("");
+        public State<Color> SelectedColor { get; set; } = new(Colors.White);
+        public State<byte> SelectedSpeed { get; set; } = new(0);
+        public State<byte> SelectedBrightness { get; set; } = new(99);
+
+        private void SelectedSpeed_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            var command = EkCommand.NewSetLedSpeed(SelectedSpeed.Value);
+            EK.Manager.Send(command);
+        }
+
+        private void SelectedEffect_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            var command = EkCommand.NewSetLedMode(Enum.Parse<LedMode>(SelectedEffect.Value));
+            EK.Manager.Send(command);
+        }
+
+        private void SelectedColor_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            var command = EkCommand.NewSetLedColor(
+                        System.Drawing.Color.FromArgb(
+                            SelectedColor.Value.A,
+                            SelectedColor.Value.R,
+                            SelectedColor.Value.G,
+                            SelectedColor.Value.B));
+            EK.Manager.Send(command);
+        }
+
+        private void SelectedBrightness_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            var command = EkCommand.NewSetLedBrightness(SelectedBrightness.Value);
+            EK.Manager.Send(command);
         }
 
         void ManagerOnOnConnected(object sender, Unit args)
@@ -28,41 +65,9 @@ namespace OpenEK.Windows.ViewModels
             var led = EK.Manager.Bus.GetLed();
             if (led.IsSome())
             {
-                SelectedEffect = led.Value.Mode.ToString() ?? "";
-                SelectedColor = Color.FromRgb(led.Value.Red, led.Value.Green, led.Value.Blue);
+                SelectedEffect.Value = led.Value.Mode.ToString() ?? "";
+                SelectedColor.Value = Color.FromRgb(led.Value.Red, led.Value.Green, led.Value.Blue);
             }
         }
-
-        void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            EkCommand? command = e.PropertyName switch
-            {
-                nameof(SelectedEffect) =>
-                    EkCommand.NewSetLedMode(
-                        Enum.Parse<LedMode>(SelectedEffect)),
-                nameof(SelectedColor) =>
-                    EkCommand.NewSetLedColor(
-                        System.Drawing.Color.FromArgb(
-                            SelectedColor.A,
-                            SelectedColor.R,
-                            _selectedColor.G,
-                            SelectedColor.B)),
-                nameof(SelectedBrightness) =>
-                    EkCommand.NewSetLedBrightness(SelectedBrightness),
-                nameof(SelectedSpeed) =>
-                    EkCommand.NewSetLedSpeed(SelectedSpeed),
-                _ => null
-            };
-
-            if (command != null)
-                EK.Manager.Send(command);
-        }
-
-        public List<string> Effects { get; set; }
-
-        [GeneratedProperty] string _selectedEffect = "";
-        [GeneratedProperty] Color _selectedColor = Colors.White;
-        [GeneratedProperty] byte _selectedSpeed = 0;
-        [GeneratedProperty] byte _selectedBrightness = 99;
     }
 }

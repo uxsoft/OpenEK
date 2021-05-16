@@ -1,54 +1,56 @@
 ﻿using System;
 using System.Linq;
-using Fonderie;
+using OpenEK.Core;
 using OpenEK.Core.Native;
 using Microsoft.FSharp.Core;
-using System.Windows.Documents;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace OpenEK.Windows.ViewModels
 {
     public partial class DashboardViewModel
     {
-        [GeneratedProperty] string _cpu = "";
-        [GeneratedProperty] string _gpu = "";
-        [GeneratedProperty] string _pump = "";
-        [GeneratedProperty] string _fan1Title = "";
-        [GeneratedProperty] string _fan1Value = "";
-        [GeneratedProperty] string _fan2Title = "";
-        [GeneratedProperty] string _fan2Value = "";
-        [GeneratedProperty] string _fan3Title = "";
-        [GeneratedProperty] string _fan3Value = "";
-        [GeneratedProperty] string _fan4Title = "";
-        [GeneratedProperty] string _fan4Value = "";
+        public State<string> CpuStatus { get; set; } = new("");
+        public State<string> GpuStatus { get; set; } = new("");
+        public State<string> PumpStatus { get; set; } = new("");
+        public State<string> Fan1Status { get; set; } = new("");
+        public State<string> Fan2Status { get; set; } = new("");
+        public State<string> Fan3Status { get; set; } = new("");
+        public State<string> Fan4Status { get; set; } = new("");
+        public State<string> Fan1Label { get; set; } = new("");
+        public State<string> Fan2Label { get; set; } = new("");
+        public State<string> Fan3Label { get; set; } = new("");
+        public State<string> Fan4Label { get; set; } = new("");
+        public State<ushort> FanPwm { get; set; } = new(0);
+        public State<ushort> PumpPwm { get; set; } = new(0);
+        public State<bool> AutoFanAdjust { get; set; } = new(true);
 
-        [GeneratedProperty] ushort _fanPwm;
-        [GeneratedProperty] ushort _pumpPwm;
-        [GeneratedProperty] bool _autoFanAdjust;
- 
-        [GeneratedProperty]
-        List<ushort> _pwmSteps =
+        public List<ushort> PwmSteps { get; set; } =
             Enumerable.Range(0, 11).Select(i => (ushort)(i * 10)).ToList();
 
         public void Start()
         {
             EK.Manager.Start();
             EK.Manager.OnDataUpdated += FanManagerOnDataUpdated;
-            PropertyChanged += DashboardViewModel_PropertyChanged;
+
+            (FanPwm as INotifyPropertyChanged).PropertyChanged += FanPwm_PropertyChanged;
+            (PumpPwm as INotifyPropertyChanged).PropertyChanged += PumpPwm_PropertyChanged; 
         }
 
-        private void DashboardViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void PumpPwm_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(FanPwm) && 
-                EK.Manager.Fans.Count > 0 && 
-                FanPwm != EK.Manager.Fans.First().Value.Pwm)
+            if (PumpPwm.Value != EK.Manager.Pump.Pwm)
             {
-                EK.Manager.Send(EkCommand.NewSetFansPwm(FanPwm));
+                EK.Manager.Send(EkCommand.NewSetPumpPwm(PumpPwm.Value));
             }
-            if (e.PropertyName == nameof(PumpPwm) &&
-                PumpPwm != EK.Manager.Pump.Pwm)
+        }
+
+        private void FanPwm_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (EK.Manager.Fans.Count > 0 &&
+                FanPwm.Value != EK.Manager.Fans.First().Value.Pwm)
             {
-                EK.Manager.Send(EkCommand.NewSetPumpPwm(PumpPwm));
+                EK.Manager.Send(EkCommand.NewSetFansPwm(FanPwm.Value));
             }
         }
 
@@ -59,19 +61,19 @@ namespace OpenEK.Windows.ViewModels
             var tCpu = HardwareMonitor.GetCpuTemperature("Core Average");
             var tGpu = HardwareMonitor.GetGpuTemperature("GPU Core");
 
-            Cpu = $"{tCpu:F1} °C";
-            Gpu = $"{tGpu:F1} °C";
-            Pump = $"{EK.Manager.Pump.Pwm} @ {EK.Manager.Pump.Speed} rpm";
+            CpuStatus.Value = $"{tCpu:F1} °C";
+            GpuStatus.Value = $"{tGpu:F1} °C";
+            PumpStatus.Value = $"{EK.Manager.Pump.Pwm} @ {EK.Manager.Pump.Speed} rpm";
+            PumpPwm.Value = EK.Manager.Pump.Pwm;
 
-            PumpPwm = EK.Manager.Pump.Pwm;
             if (EK.Manager.Fans.Count > 0)
-                FanPwm = EK.Manager.Fans.First().Value.Pwm;
+                FanPwm.Value = EK.Manager.Fans.First().Value.Pwm;
 
             var fanSetters = new Action<string, string>[] {
-                (t, v) => { Fan1Value = v; Fan1Title = t; },
-                (t, v) => { Fan2Value = v; Fan2Title = t; },
-                (t, v) => { Fan3Value = v; Fan3Title = t; },
-                (t, v) => { Fan4Value = v; Fan4Title = t; },
+                (t, v) => { Fan1Status.Value = v; Fan1Label.Value = t; },
+                (t, v) => { Fan2Status.Value = v; Fan2Label.Value = t; },
+                (t, v) => { Fan3Status.Value = v; Fan3Label.Value = t; },
+                (t, v) => { Fan4Status.Value = v; Fan4Label.Value = t; },
             };
 
             for (var i = 0; i < Math.Min(EK.Manager.Fans.Count, fanSetters.Length - 1); i++)
