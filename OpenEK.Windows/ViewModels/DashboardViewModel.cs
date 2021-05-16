@@ -24,7 +24,8 @@ namespace OpenEK.Windows.ViewModels
 
         [GeneratedProperty] ushort _fanPwm;
         [GeneratedProperty] ushort _pumpPwm;
-
+        [GeneratedProperty] bool _autoFanAdjust;
+ 
         [GeneratedProperty]
         List<ushort> _pwmSteps =
             Enumerable.Range(0, 11).Select(i => (ushort)(i * 10)).ToList();

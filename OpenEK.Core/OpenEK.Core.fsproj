@@ -3,10 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>x86</PlatformTarget>
+		<PlatformTarget>x86</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>

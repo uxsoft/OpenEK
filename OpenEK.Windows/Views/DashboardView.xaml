@@ -51,7 +51,7 @@
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="2" Margin="16">
             <Label Content="Auto Adjust"/>
-            <CheckBox Margin="0,6,0,0" />
+            <CheckBox Margin="0,6,0,0" IsChecked="{Binding AutoFanAdjust}"/>
         </StackPanel>
     </Grid>
 </UserControl>
