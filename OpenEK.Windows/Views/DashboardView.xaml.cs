@@ -15,14 +15,14 @@ namespace OpenEK.Windows.Views
             DataContext = vm;
         }
 
-        private void btnSetPumpPwm_Click(object sender, RoutedEventArgs e)
-        {
-            EK.Manager.Send(EkCommand.NewSetPumpPwm((ushort) txtTargetPwm.Value));
-        }
+        //private void btnSetPumpPwm_Click(object sender, RoutedEventArgs e)
+        //{
+        //    EK.Manager.Send(EkCommand.NewSetPumpPwm((ushort) txtTargetPwm.Value));
+        //}
 
-        private void btnSetFanPwm_Click(object sender, RoutedEventArgs e)
-        {
-            EK.Manager.Send(EkCommand.NewSetFansPwm((ushort) txtTargetPwm.Value));
-        }
+        //private void btnSetFanPwm_Click(object sender, RoutedEventArgs e)
+        //{
+        //    EK.Manager.Send(EkCommand.NewSetFansPwm((ushort) txtTargetPwm.Value));
+        //}
     }
 }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using Fonderie;
 using Microsoft.FSharp.Core;
@@ -17,11 +15,11 @@ namespace OpenEK.Windows.ViewModels
         public LightsViewModel()
         {
             Effects = Enum.GetNames(typeof(LedMode)).ToList();
-            
+
             if (EK.Manager.Bus.IsConnected)
                 ManagerOnOnConnected(this, null);
             else EK.Manager.OnConnected += ManagerOnOnConnected;
-            
+
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -49,6 +47,10 @@ namespace OpenEK.Windows.ViewModels
                             SelectedColor.R,
                             _selectedColor.G,
                             SelectedColor.B)),
+                nameof(SelectedBrightness) =>
+                    EkCommand.NewSetLedBrightness(SelectedBrightness),
+                nameof(SelectedSpeed) =>
+                    EkCommand.NewSetLedSpeed(SelectedSpeed),
                 _ => null
             };
 
@@ -60,5 +62,7 @@ namespace OpenEK.Windows.ViewModels
 
         [GeneratedProperty] string _selectedEffect = "";
         [GeneratedProperty] Color _selectedColor = Colors.White;
+        [GeneratedProperty] byte _selectedSpeed = 0;
+        [GeneratedProperty] byte _selectedBrightness = 99;
     }
 }

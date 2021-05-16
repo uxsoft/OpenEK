@@ -3,6 +3,8 @@ using System.Linq;
 using Fonderie;
 using OpenEK.Core.Native;
 using Microsoft.FSharp.Core;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace OpenEK.Windows.ViewModels
 {
@@ -19,14 +21,34 @@ namespace OpenEK.Windows.ViewModels
         [GeneratedProperty] string _fan3Value = "";
         [GeneratedProperty] string _fan4Title = "";
         [GeneratedProperty] string _fan4Value = "";
-                   
-        public RollingHistory CpuTemperatureHistory { get; set; } = new();
-        public RollingHistory GpuTemperatureHistory { get; set; } = new();
+
+        [GeneratedProperty] ushort _fanPwm;
+        [GeneratedProperty] ushort _pumpPwm;
+
+        [GeneratedProperty]
+        List<ushort> _pwmSteps =
+            Enumerable.Range(0, 11).Select(i => (ushort)(i * 10)).ToList();
 
         public void Start()
         {
             EK.Manager.Start();
             EK.Manager.OnDataUpdated += FanManagerOnDataUpdated;
+            PropertyChanged += DashboardViewModel_PropertyChanged;
+        }
+
+        private void DashboardViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FanPwm) && 
+                EK.Manager.Fans.Count > 0 && 
+                FanPwm != EK.Manager.Fans.First().Value.Pwm)
+            {
+                EK.Manager.Send(EkCommand.NewSetFansPwm(FanPwm));
+            }
+            if (e.PropertyName == nameof(PumpPwm) &&
+                PumpPwm != EK.Manager.Pump.Pwm)
+            {
+                EK.Manager.Send(EkCommand.NewSetPumpPwm(PumpPwm));
+            }
         }
 
         void FanManagerOnDataUpdated(object? sender, Unit e)
@@ -34,13 +56,15 @@ namespace OpenEK.Windows.ViewModels
             HardwareMonitor.Update();
 
             var tCpu = HardwareMonitor.GetCpuTemperature("Core Average");
-            CpuTemperatureHistory.AddReading(tCpu);
             var tGpu = HardwareMonitor.GetGpuTemperature("GPU Core");
-            GpuTemperatureHistory.AddReading(tGpu);
 
-            Cpu = $"{tCpu:F1}°C";
-            Gpu = $"{tGpu:F1}°C";
-            Pump = $"{EK.Manager.Pump.Pwm} => {EK.Manager.Pump.Speed}rpm";
+            Cpu = $"{tCpu:F1} °C";
+            Gpu = $"{tGpu:F1} °C";
+            Pump = $"{EK.Manager.Pump.Pwm} @ {EK.Manager.Pump.Speed} rpm";
+
+            PumpPwm = EK.Manager.Pump.Pwm;
+            if (EK.Manager.Fans.Count > 0)
+                FanPwm = EK.Manager.Fans.First().Value.Pwm;
 
             var fanSetters = new Action<string, string>[] {
                 (t, v) => { Fan1Value = v; Fan1Title = t; },
@@ -54,7 +78,7 @@ namespace OpenEK.Windows.ViewModels
                 var fan = EK.Manager.Fans.ElementAt(i);
                 var setter = fanSetters[i];
 
-                setter($"FAN{fan.Key}", $"{fan.Value.Pwm} => {fan.Value.Speed}rpm");
+                setter($"FAN{fan.Key}", $"{fan.Value.Pwm} @ {fan.Value.Speed} rpm");
             }
         }
     }

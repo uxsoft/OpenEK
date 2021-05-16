@@ -65,3 +65,4 @@ type EkCommand =
     | SetLedColor of Color
     | SetLedMode of LedMode
     | SetLedSpeed of byte
+    | SetLedBrightness of byte
