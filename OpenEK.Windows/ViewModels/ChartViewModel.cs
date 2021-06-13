@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Accord.Math;
 using Accord.Statistics.Models.Regression.Linear;
-using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Geared;
 using Microsoft.FSharp.Core;
+using OpenEK.Core.HwInfo;
 using OpenEK.Core.Native;
 using OpenEK.Windows.Extensions;
 
@@ -16,22 +12,22 @@ namespace OpenEK.Windows.ViewModels
 {
     public partial class ChartViewModel
     {
-        public ChartValues<ObservableValue> CpuTemp { get; set; } = new();
-        public ChartValues<ObservableValue> CpuTempNormalised { get; set; } = new();
-        public ChartValues<ObservableValue> GpuTemp { get; set; } = new();
-        public ChartValues<ObservableValue> GpuTempNormalised { get; set; } = new();
-        public ChartValues<ObservableValue> FanSpeed { get; } = new();
-        public ChartValues<ObservableValue> PumpSpeed { get; set; } = new();
+        public GearedValues<ObservableValue> CpuTemp { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        public GearedValues<ObservableValue> CpuTempNormalised { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        public GearedValues<ObservableValue> GpuTemp { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        public GearedValues<ObservableValue> GpuTempNormalised { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        public GearedValues<ObservableValue> FanSpeed { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        public GearedValues<ObservableValue> PumpSpeed { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
 
         public ChartViewModel()
         {
-            EK.Manager.OnDataUpdated += FanManagerOnDataUpdated;
+            EK.Manager.OnDataUpdated += OnDataUpdated;
         }
 
-        private void FanManagerOnDataUpdated(object? sender, Unit e)
+        private void OnDataUpdated(object? sender, Unit e)
         {
-            CpuTemp.AddAndCut(HardwareMonitor.GetCpuTemperature("CPU Package")); //Core Average
-            GpuTemp.AddAndCut(HardwareMonitor.GetGpuTemperature("GPU Core"));
+            CpuTemp.AddAndCut(HardwareInfo.GetCpuTemperature("CPU Package").GetValueOrDefault(0)); //Core Average
+            GpuTemp.AddAndCut(HardwareInfo.GetGpuTemperature("GPU Core").GetValueOrDefault(0));
 
             FanSpeed.AddAndCut(EK.Manager.Fans
                 .Select(i => i.Value)
@@ -40,19 +36,6 @@ namespace OpenEK.Windows.ViewModels
 
             CpuTempNormalised.AddAndCut(Regress(CpuTemp));
             GpuTempNormalised.AddAndCut(Regress(GpuTemp));
-        }
-
-        public double Regress(ChartValues<ObservableValue> series, int bandwith = 20, int measurementOffset = 10)
-        {
-            var yValues = series.TakeLast(20).Select(v => v.Value).ToArray();
-            var xValues = Enumerable.Range(1, yValues.Length).ToArray();
-            var xLog = Elementwise.Log(xValues);
-
-            var ols = new OrdinaryLeastSquares();
-            var lr = ols.Learn(xLog, yValues);
-
-            var predicted = lr.Transform(xLog.TakeLast(10).First());
-            return predicted;
         }
     }
 }

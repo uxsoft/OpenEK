@@ -16,9 +16,9 @@ namespace OpenEK.Windows.ViewModels
         {
             Effects = Enum.GetNames(typeof(LedMode)).ToList();
 
-            if (EK.Manager.Bus.IsConnected)
+            if (Core.App.Device.Api.IsConnected)
                 ManagerOnOnConnected(this, null);
-            else EK.Manager.OnConnected += ManagerOnOnConnected;
+            else Core.App.Device.OnConnected += ManagerOnOnConnected;
 
             (SelectedBrightness as INotifyPropertyChanged).PropertyChanged += SelectedBrightness_PropertyChanged;
             (SelectedColor as INotifyPropertyChanged).PropertyChanged += SelectedColor_PropertyChanged;
@@ -34,13 +34,13 @@ namespace OpenEK.Windows.ViewModels
         private void SelectedSpeed_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             var command = EkCommand.NewSetLedSpeed(SelectedSpeed.Value);
-            EK.Manager.Send(command);
+            Core.App.Device.Send(command);
         }
 
         private void SelectedEffect_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             var command = EkCommand.NewSetLedMode(Enum.Parse<LedMode>(SelectedEffect.Value));
-            EK.Manager.Send(command);
+            Core.App.Device.Send(command);
         }
 
         private void SelectedColor_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -51,18 +51,18 @@ namespace OpenEK.Windows.ViewModels
                             SelectedColor.Value.R,
                             SelectedColor.Value.G,
                             SelectedColor.Value.B));
-            EK.Manager.Send(command);
+            Core.App.Device.Send(command);
         }
 
         private void SelectedBrightness_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             var command = EkCommand.NewSetLedBrightness(SelectedBrightness.Value);
-            EK.Manager.Send(command);
+            Core.App.Device.Send(command);
         }
 
         void ManagerOnOnConnected(object sender, Unit args)
         {
-            var led = EK.Manager.Bus.GetLed();
+            var led = Core.App.Device.Api.GetLed();
             if (led.IsSome())
             {
                 SelectedEffect.Value = led.Value.Mode.ToString() ?? "";

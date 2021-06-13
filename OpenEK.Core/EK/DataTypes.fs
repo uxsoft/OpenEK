@@ -1,4 +1,4 @@
-namespace OpenEK.Core.Native
+namespace OpenEK.Core.EK
 
 open System.Drawing
 open System.Runtime.InteropServices
@@ -59,10 +59,3 @@ type SensorsData =
       LevelModel: uint16
       LevelValue: uint16 }
 
-type EkCommand =
-    | SetFansPwm of uint16
-    | SetPumpPwm of uint16 
-    | SetLedColor of Color
-    | SetLedMode of LedMode
-    | SetLedSpeed of byte
-    | SetLedBrightness of byte

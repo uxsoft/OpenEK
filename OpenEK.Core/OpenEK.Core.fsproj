@@ -11,17 +11,21 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<Compile Include="Extensions\State.fs" />
+		<Compile Include="Extensions\List.fs" />
+
 		<Compile Include="EK\DataTypes.fs" />
 		<Compile Include="EK\PInvoke.fs" />
-		<Compile Include="EK\EKConnectBus.fs" />
-		<Compile Include="EK\EKConnectManager.fs" />
-		<Compile Include="EK\EK.fs" />
-		<Compile Include="HwInfo\HardwareMonitor.fs" />
-		<Compile Include="HwInfo\Fans.fs" />
+		<Compile Include="EK\Device.fs" />
+		<Compile Include="EK\Commands.fs" />
+		<Compile Include="System\HwInfo.fs" />
+		<Compile Include="System\HwTemps.fs" />
+		<Compile Include="System\Cooling.fs" />
+		<Compile Include="EKService.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="5.0.1" />
+		<PackageReference Include="FSharp.Stats" Version="0.4.1" />
 		<PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
 	</ItemGroup>
 

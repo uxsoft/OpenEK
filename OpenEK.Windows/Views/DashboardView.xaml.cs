@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using OpenEK.Core.Native;
 using OpenEK.Windows.ViewModels;
 
 namespace OpenEK.Windows.Views
@@ -10,9 +9,7 @@ namespace OpenEK.Windows.Views
         public DashboardView()
         {
             InitializeComponent();
-            var vm = new DashboardViewModel();
-            vm.Start();
-            DataContext = vm;
+            DataContext = new DashboardViewModel();
         }
     }
 }
