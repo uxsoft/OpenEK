@@ -20,7 +20,7 @@
 		<Compile Include="System\HwInfo.fs" />
 		<Compile Include="System\HwTemps.fs" />
 		<Compile Include="System\Cooling.fs" />
-		<Compile Include="EKService.fs" />
+		<Compile Include="EKManager.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,16 +1,12 @@
-module OpenEK.Core.EKService
+module OpenEK.Core.EKManager
 
 open System.Timers
 open OpenEK.Core.EK
 open OpenEK.Core.System
 
-let onDataUpdatedEvent = Event<unit>()
-let onConnectedEvent = Event<unit>()
-
-[<CLIEvent>]
-let OnDataUpdated = onDataUpdatedEvent.Publish
-
-[<CLIEvent>]
+let private onDataUpdatedEvent = Event<unit>()
+let OnDataUpdated  = onDataUpdatedEvent.Publish
+let private onConnectedEvent = Event<unit>()
 let OnConnected = onConnectedEvent.Publish
 
 let cpuSensor = "CPU Package"
@@ -24,7 +20,9 @@ let update () =
     let cpu = HwInfo.getCpuTemperature computer cpuSensor
     let gpu = HwInfo.getGpuTemperature computer gpuSensor
     
-    temps <- HwTemps.tick 6 (float cpu) (float gpu) temps 
+    temps <- HwTemps.tick 6 (float cpu) (float gpu) temps
+    
+    onDataUpdatedEvent.Trigger ()
         
 let onTimerElapsed e =
     update ()
@@ -39,8 +37,12 @@ let mutable deviceState = Commands.getState()
 
 let commandQueue = Commands.createQueue()
 
-let queueCommand =
-    Commands.queueCommand deviceState (fun s -> deviceState <- s) commandQueue
+let queueCommand command =
+    Commands.queueCommand
+        deviceState
+        (fun s -> deviceState <- s)
+        commandQueue
+        command
 
 let refreshState () = deviceState <- Commands.getState()
 
@@ -48,11 +50,13 @@ let connect () =
     if Device.reconnect() = false then
         failwith "Unable to connect to the EK Connect Hardware"
 
+    onConnectedEvent.Trigger ()
+    
     timer.Start()
 
 let disconnect () =
     Device.disconnect()
     timer.Stop()
 
-do       
-    timer.Elapsed.Add onTimerElapsed
+do timer.Elapsed.Add onTimerElapsed
+    

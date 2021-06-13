@@ -13,39 +13,39 @@ let (|RegEx|_|) regex str =
    else None
 
 let refresh() =
-    let cpu = EKService.cpu()
-    let gpu = EKService.gpu()
+    let cpu = EKManager.cpu()
+    let gpu = EKManager.gpu()
     
-    EKService.refreshState()
+    EKManager.refreshState()
     
     Thread.Sleep(200)
     Console.Clear()
     printf $"CPU: {cpu:F1}\t GPU: {gpu:F1}\t"
-    printfn $"PUMP: {EKService.deviceState.Pump.Pwm}pwm/{EKService.deviceState.Pump.Speed}rpm"
-    for fan in EKService.deviceState.Fans do
+    printfn $"PUMP: {EKManager.deviceState.Pump.Pwm}pwm/{EKManager.deviceState.Pump.Speed}rpm"
+    for fan in EKManager.deviceState.Fans do
         printf $"FAN{fan.Key}: {fan.Value.Pwm}pwm/{fan.Value.Speed}rpm\t"
     printfn ""
 
 let setPump pwm =
-    EKService.queueCommand (SetPumpPwm pwm)
+    EKManager.queueCommand (SetPumpPwm pwm)
     refresh()
 
 let setFans pwm =
-    EKService.queueCommand (SetFansPwm pwm)
+    EKManager.queueCommand (SetFansPwm pwm)
     refresh()
     
 let setLightMode modeName =
     let success, mode = Enum.TryParse<LedMode>(modeName)
-    EKService.queueCommand (SetLedMode mode)
+    EKManager.queueCommand (SetLedMode mode)
     refresh()
 
 let setLightColor color =
-    EKService.queueCommand (SetLedColor color)
+    EKManager.queueCommand (SetLedColor color)
     refresh()
 
 [<EntryPoint>]
 let main argv =
-    EKService.connect()
+    EKManager.connect()
  
     refresh()
     
@@ -58,7 +58,7 @@ let main argv =
         | RegEx "color (#[a-fA-F0-9]{6,8})" [color] ->
             ColorTranslator.FromHtml(color) |> setLightColor
         | "exit" | "quit" ->
-            EKService.disconnect()
+            EKManager.disconnect()
             userRequestedExit <- true
         | _ -> refresh()
         

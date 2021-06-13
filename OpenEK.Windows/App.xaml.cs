@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Navigation;
+using OpenEK.Core;
 
 namespace OpenEK.Windows
 {
@@ -13,5 +15,9 @@ namespace OpenEK.Windows
     /// </summary>
     public partial class App : Application
     {
+        void App_OnLoadCompleted(object sender, NavigationEventArgs e)
+        {
+            EKManager.connect();
+        }
     }
 }

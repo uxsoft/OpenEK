@@ -1,41 +1,38 @@
 ﻿using System.Linq;
-using Accord.Math;
-using Accord.Statistics.Models.Regression.Linear;
 using LiveCharts.Defaults;
 using LiveCharts.Geared;
 using Microsoft.FSharp.Core;
-using OpenEK.Core.HwInfo;
-using OpenEK.Core.Native;
+using OpenEK.Core;
 using OpenEK.Windows.Extensions;
 
 namespace OpenEK.Windows.ViewModels
 {
-    public partial class ChartViewModel
+    public class ChartViewModel
     {
-        public GearedValues<ObservableValue> CpuTemp { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
-        public GearedValues<ObservableValue> CpuTempNormalised { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
-        public GearedValues<ObservableValue> GpuTemp { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
-        public GearedValues<ObservableValue> GpuTempNormalised { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
-        public GearedValues<ObservableValue> FanSpeed { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
-        public GearedValues<ObservableValue> PumpSpeed { get; set; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> CpuTemp { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> CpuTempNormalised { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> GpuTemp { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> GpuTempNormalised { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> FanSpeed { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
+        GearedValues<ObservableValue> PumpSpeed { get; } = new GearedValues<ObservableValue>().WithQuality(Quality.Low);
 
         public ChartViewModel()
         {
-            EK.Manager.OnDataUpdated += OnDataUpdated;
+            EKManager.OnDataUpdated.AddHandler(OnDataUpdated);
         }
 
-        private void OnDataUpdated(object? sender, Unit e)
+        void OnDataUpdated(object? sender, Unit e)
         {
-            CpuTemp.AddAndCut(HardwareInfo.GetCpuTemperature("CPU Package").GetValueOrDefault(0)); //Core Average
-            GpuTemp.AddAndCut(HardwareInfo.GetGpuTemperature("GPU Core").GetValueOrDefault(0));
+            CpuTemp.AddAndCut(EKManager.cpu()); //Core Average
+            GpuTemp.AddAndCut(EKManager.gpu());
 
-            FanSpeed.AddAndCut(EK.Manager.Fans
+            FanSpeed.AddAndCut(EKManager.deviceState.Fans
                 .Select(i => i.Value)
                 .Average(f => f.Speed));
-            PumpSpeed.AddAndCut(EK.Manager.Pump.Speed);
+            PumpSpeed.AddAndCut(EKManager.deviceState.Pump.Speed);
 
-            CpuTempNormalised.AddAndCut(Regress(CpuTemp));
-            GpuTempNormalised.AddAndCut(Regress(GpuTemp));
+            CpuTempNormalised.AddAndCut(EKManager.effectiveCpu());
+            GpuTempNormalised.AddAndCut(EKManager.effectiveGpu());
         }
     }
 }
