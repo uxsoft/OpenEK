@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:OpenEK.Windows"
              xmlns:ui="http://schemas.modernwpf.com/2019"
              StartupUri="Views/MainWindow.xaml"
-             LoadCompleted="App_OnLoadCompleted">
+             Startup="App_OnStartup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -20,13 +20,12 @@
 		<Compile Include="System\HwInfo.fs" />
 		<Compile Include="System\HwTemps.fs" />
 		<Compile Include="System\Cooling.fs" />
-		<Compile Include="EKManager.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="5.0.1" />
-		<PackageReference Include="FSharp.Stats" Version="0.4.1" />
+		<PackageReference Include="FSharp.Stats" Version="0.4.2" />
 		<PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
+		<PackageReference Update="FSharp.Core" Version="5.0.2" />
 	</ItemGroup>
 
 </Project>

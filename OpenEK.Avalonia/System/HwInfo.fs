@@ -36,7 +36,7 @@ let getGpu (computer: Computer) =
         hw.HardwareType = HardwareType.GpuAmd || hw.HardwareType = HardwareType.GpuNvidia);
 
 let getGpuName (computer: Computer) =
-    getGpu(computer).Name
+    getGpu(computer).Name.Replace("NVIDIA NVIDIA ", "NVIDIA ")
 
 let getGpuTemperatureSensors (computer: Computer) =
     let gpu = getGpu computer

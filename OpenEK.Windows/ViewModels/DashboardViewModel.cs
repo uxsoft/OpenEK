@@ -59,6 +59,8 @@ namespace OpenEK.Windows.ViewModels
             var tCpu = EKManager.cpu();
             var tGpu = EKManager.gpu();
 
+            Console.WriteLine($"onDataUpdated {tCpu}");
+
             CpuStatus.Value = $"{tCpu:F1} °C";
             GpuStatus.Value = $"{tGpu:F1} °C";
             PumpStatus.Value = $"{EKManager.deviceState.Pump.Pwm} @ {EKManager.deviceState.Pump.Speed} rpm";
@@ -93,10 +95,10 @@ namespace OpenEK.Windows.ViewModels
 
             for (var i = 0; i < Math.Min(EKManager.deviceState.Fans.Count, fanSetters.Length - 1); i++)
             {
-                var fan = EKManager.deviceState.Fans.ElementAt(i);
+                var (key, value) = EKManager.deviceState.Fans.ElementAt(i);
                 var setter = fanSetters[i];
 
-                setter($"FAN{fan.Key}", $"{fan.Value.Pwm} @ {fan.Value.Speed} rpm");
+                setter($"FAN{key}", $"{value.Pwm} @ {value.Speed} rpm");
             }
 
             if (AutoFanAdjust.Value)

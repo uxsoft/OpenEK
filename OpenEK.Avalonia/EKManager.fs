@@ -47,11 +47,12 @@ let queueCommand command =
 let refreshState () = deviceState <- Commands.getState()
 
 let connect () =
-    if Device.reconnect() = false then
+    if not (Device.reconnect()) then
+        printfn "failed to connect to EK connect"
         failwith "Unable to connect to the EK Connect Hardware"
 
-    onConnectedEvent.Trigger ()
-    
+    printfn "connected to ek connect"
+    update()  
     timer.Start()
 
 let disconnect () =
