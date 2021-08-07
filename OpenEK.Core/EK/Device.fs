@@ -153,6 +153,7 @@ let getPump () =
 /// <summary>
 /// Used to adjust pump speed (pwm). Pump must be in fan port #6.
 /// </summary>
+/// <param name="pump">Previously retrieved pump data using getPump. All of this data will be written to the device with the new pwm. </param>
 /// <param name="pwm">Value between 0 and 100</param>
 /// <returns></returns>
 [<HandleProcessCorruptedStateExceptions>]

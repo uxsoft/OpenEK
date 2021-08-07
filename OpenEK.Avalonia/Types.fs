@@ -6,8 +6,8 @@ open OpenEK.Core.EK
 open OpenEK.Core.System
 
 type Page =
-    | Dashboard
-    | Illumination
+    | Dashboard = 0
+    | Illumination = 1
 
 type ComputeInfo =
     { CpuName: string
@@ -30,27 +30,33 @@ type Device =
 type Model =
     { CurrentPage: Page
       Compute: ComputeInfo
+      IsConnected: bool
       Fans: Map<int, FanData>
-      Pump: FanData option }
+      Pump: FanData option
+      Lights: LedData option }
 
 type Msg =
+    | Navigate of Page
     | UpdateComputeInfo
     | UpdateFans 
     | UpdatePump
+    | UpdateLights
 
 let init () : Model * Cmd<Msg> =
 //    async { EKManager.connect() } |> Async.Start
     let isConnected = EK.Device.connect()
     
-    { CurrentPage = Dashboard
+    { CurrentPage = Page.Dashboard
       Compute = getInfo()
+      IsConnected = isConnected
       Fans = EK.Device.getFans false
-      Pump = EK.Device.getPump () }, []
-
-
+      Pump = EK.Device.getPump ()
+      Lights = EK.Device.getLed () }, []
 
 let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
     match msg with
+    | Navigate page -> { model with CurrentPage = page }, []
     | UpdateComputeInfo -> { model with Compute = getInfo() }, []
     | UpdateFans -> { model with Fans = EK.Device.getFans false }, []
     | UpdatePump -> { model with Pump = EK.Device.getPump () }, []
+    | UpdateLights -> { model with Lights = EK.Device.getLed () }, []

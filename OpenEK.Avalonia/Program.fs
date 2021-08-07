@@ -18,16 +18,25 @@ open OpenEk.Avalonia.Types
 
 let transferState<'t> oldState =
     try
-        let json = JsonSerializer.Serialize oldState
-        let state = JsonSerializer.Deserialize<'t> json        
-        match box state with
-        | null -> None
-        | _ -> Some (state, [])
+        let json = Thoth.Json.Encode.Auto.toString(4, oldState)
+        let state = Thoth.Json.Decode.Auto.fromString<'t>(json)        
+        match state with
+        | Error err -> printfn $"{err}"; None
+        | Ok model -> Some (model, [])
     with _ -> None
 
+let isProduction () =
+    #if false // DEBUG
+        false
+    #else
+        true
+    #endif
+    
 type MainControl(parent: Window) as this =
     inherit HostControl()
     do
+        OpenEK.Core.EK.Device.disconnect()
+        
         let hotInit () =
             match transferState<Model> parent.DataContext with
             | Some newState -> newState
@@ -35,7 +44,10 @@ type MainControl(parent: Window) as this =
         
         Elmish.Program.mkProgram hotInit update App.view
         |> Program.withHost this
-        |> Program.withTrace (fun msg state -> parent.DataContext <- state)
+        |> Program.withTrace (fun msg model ->
+            printfn $"Message: {msg}"
+            printfn $"Model: {model}"
+            parent.DataContext <- model)
         |> Program.run
 
 type App() =
@@ -53,9 +65,17 @@ type App() =
     override this.OnFrameworkInitializationCompleted() =
         match this.ApplicationLifetime with
         | :? IClassicDesktopStyleApplicationLifetime as desktopLifetime ->
-            let window = new LiveViewHost(this, fun msg -> printfn $"%s{msg}")
+            let window =
+                if isProduction() then
+                    let window = new LiveViewHost(this, fun msg -> printfn $"%s{msg}")
+                    window.StartWatchingSourceFilesForHotReloading()
+                    window :> Window
+                else
+                    let window = Window()
+                    window.Content <- MainControl(window)
+                    window                    
+            
             window.Title <- "Open EK Connect"
-            window.StartWatchingSourceFilesForHotReloading()
             window.TransparencyLevelHint <- WindowTransparencyLevel.AcrylicBlur
             window.SystemDecorations <- SystemDecorations.Full
             window.ExtendClientAreaToDecorationsHint <- true
@@ -63,6 +83,7 @@ type App() =
             window.ExtendClientAreaChromeHints <- ExtendClientAreaChromeHints.PreferSystemChrome
             window.Background <- null
             window.Show()
+            
             base.OnFrameworkInitializationCompleted()
         | _ -> ()
 

@@ -13,10 +13,10 @@ open Avalonia.FuncUI.Experiments.DSL.DSL
 let view (model: Model) dispatch =
     grid {
         rowDefinitions "50, *"
-        text {
+        label {
             margin (Thickness(20.))
             fontSize 24.
-            text "Dashboard"
+            "Dashboard"
         }
         grid {
             row 1
@@ -44,7 +44,10 @@ let view (model: Model) dispatch =
                 verticalAlignment VerticalAlignment.Top
                 horizontalAlignment HorizontalAlignment.Right
                 margin (Thickness(20.))
-                onClick (fun _ -> dispatch UpdateComputeInfo)
+                onClick (fun _ ->
+                    dispatch UpdateComputeInfo
+                    dispatch UpdateFans
+                    dispatch UpdatePump)
                 UI.refreshSymbol
             }
             

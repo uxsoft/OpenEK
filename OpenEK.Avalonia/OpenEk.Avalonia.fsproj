@@ -19,8 +19,6 @@
     <None Include="UsbDll.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="Extensions\State.fs" />
-    <Compile Include="Extensions\List.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,20 +31,13 @@
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
     <PackageReference Include="Live.Avalonia" Version="1.3.1" />
     <PackageReference Include="Ply" Version="0.3.1" />
-    <PackageReference Include="uxsoft.Avalonia.FuncUI.CEDSL" Version="1.18.0" />
+    <PackageReference Include="Thoth.Json" Version="6.0.0" />
+    <PackageReference Include="uxsoft.Avalonia.FuncUI.CEDSL" Version="1.20.0" />
     <PackageReference Update="FSharp.Core" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="Styles\SideBar.xaml" />
-    <Compile Include="EK\DataTypes.fs" />
-    <Compile Include="EK\PInvoke.fs" />
-    <Compile Include="EK\Device.fs" />
-    <Compile Include="EK\Commands.fs" />
-    <Compile Include="System\HwInfo.fs" />
-    <Compile Include="System\HwTemps.fs" />
-    <Compile Include="System\Cooling.fs" />
-    <Compile Include="EKManager.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="UI.fs" />
     <Compile Include="DashboardPage.fs" />
@@ -55,7 +46,8 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
 
-  <ItemGroup>
-<!--    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />-->
+  <ItemGroup><!--    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />-->
+  
+    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />
   </ItemGroup>
 </Project>

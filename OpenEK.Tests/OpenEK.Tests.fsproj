@@ -22,12 +22,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\OpenEK.API\OpenEK.API.csproj" />
-    <ProjectReference Include="..\OpenEK.Windows\OpenEK.Windows.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Include="LoessTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>
