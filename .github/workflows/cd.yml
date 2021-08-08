@@ -27,7 +27,7 @@ jobs:
 
     # Archive the package
     - name: Create archive
-      run: Compress-Archive -Path OpenEk.Windows\bin\Release\net5.0-windows10.0.19041.0\ -DestinationPath Binaries.zip
+      run: Compress-Archive -Path OpenEk.Avalonia\bin\Release\net5.0\ -DestinationPath Binaries.zip
 
     # Create the release:  https://github.com/actions/create-release
     - name: Create release
