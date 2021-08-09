@@ -22,10 +22,6 @@ let getInfo () =
       CpuTemperature = HwInfo.getCpuTemperature computer "CPU Package"
       GpuName = HwInfo.getGpuName computer
       GpuTemperature = HwInfo.getGpuTemperature computer "GPU Core" }
-    
-type Device =
-    { Pump: int
-      Fans: int list }
 
 type Model =
     { CurrentPage: Page
@@ -43,7 +39,7 @@ type Msg =
     | UpdateLights
 
 let init () : Model * Cmd<Msg> =
-//    async { EKManager.connect() } |> Async.Start
+    
     let isConnected = EK.Device.connect()
     
     { CurrentPage = Page.Dashboard

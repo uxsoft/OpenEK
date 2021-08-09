@@ -21,7 +21,7 @@ let view (model: Model) dispatch =
         grid {
             row 1
             columnDefinitions "*, *, *, *, *"
-            rowDefinitions "*, *"
+            rowDefinitions "*, *, *, *"
             grid {
                 column 0
                 UI.statistic model.Compute.CpuName $"{model.Compute.CpuTemperature}°C"
@@ -57,5 +57,15 @@ let view (model: Model) dispatch =
                     column fan.Key
                     UI.biStatistic $"FAN{fan.Key}" $"{fan.Value.Pwm}%%" $"RPM: {fan.Value.Speed}"
                 }
+                
+            border {
+                row 2
+                label { "charts here" }
+            }
+            
+            border {
+                row 3
+                label { "controls here" }
+            }
         }
     }

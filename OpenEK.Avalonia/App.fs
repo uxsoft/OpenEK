@@ -25,15 +25,16 @@ let view (model: Model) dispatch =
         
         tabControl {
             classes ["sidebar"]
-            selectedIndex (int model.CurrentPage)
-            
+
             tabItem {
                 header "Dashboard"
+                isSelected (model.CurrentPage = Page.Dashboard)
                 onTapped (fun _ -> dispatch (Navigate Page.Dashboard))
                 DashboardPage.view model dispatch
             }
             tabItem {
                 header "Illumination"
+                isSelected (model.CurrentPage = Page.Illumination)
                 onTapped (fun _ -> dispatch (Navigate Page.Illumination))
                 IlluminationPage.view model dispatch
             }

@@ -1,6 +1,7 @@
 ﻿module FuncUI.Experiments.Program
 
 open System.Text.Json
+open System.Text.Json.Serialization
 open Avalonia.Controls
 open Avalonia.Media
 open Avalonia.Media.Immutable
@@ -16,14 +17,22 @@ open OpenEK.Avalonia
 open Live.Avalonia
 open OpenEk.Avalonia.Types
 
-let transferState<'t> oldState =
+let transferModel<'t> previousModel =
     try
-        let json = Thoth.Json.Encode.Auto.toString(4, oldState)
-        let state = Thoth.Json.Decode.Auto.fromString<'t>(json)        
-        match state with
-        | Error err -> printfn $"{err}"; None
-        | Ok model -> Some (model, [])
-    with _ -> None
+        let options = JsonSerializerOptions()
+        options.Converters.Add(JsonFSharpConverter())
+        
+        let json = JsonSerializer.Serialize(previousModel, options)
+        let model = JsonSerializer.Deserialize<Model>(json, options)
+        
+        match box model with
+        | null -> failwith "Failed to transfer model"
+        | _ ->
+            printf $"Successfully transferred model: {model}"
+            Some (model, [])
+    with err ->
+        printfn $"{err}"
+        None
 
 let isProduction () =
     #if false // DEBUG
@@ -38,7 +47,7 @@ type MainControl(parent: Window) as this =
         OpenEK.Core.EK.Device.disconnect()
         
         let hotInit () =
-            match transferState<Model> parent.DataContext with
+            match transferModel<Model> parent.DataContext with
             | Some newState -> newState
             | None -> init ()
         

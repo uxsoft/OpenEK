@@ -17,6 +17,7 @@ let view (model: Model) dispatch =
         }
         
         button {
+            row 1
             column 4
             width 32.
             height 32.
@@ -29,6 +30,8 @@ let view (model: Model) dispatch =
         
         stackPanel {
             row 1
+            width 200.
+            horizontalAlignment HorizontalAlignment.Left
             margin (Thickness(20.))
             
             match model.Lights with

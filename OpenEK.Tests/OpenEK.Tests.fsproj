@@ -21,6 +21,12 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Include="ModelTests.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\OpenEK.Avalonia\OpenEk.Avalonia.fsproj" />
+    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />
   </ItemGroup>
 </Project>
