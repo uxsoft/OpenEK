@@ -1,10 +1,11 @@
-﻿module OpenEK.Avalonia.App
+﻿module OpenEk.Avalonia.App
 
 open Avalonia
 open Avalonia.Controls
 open Avalonia.Layout
 open Avalonia.Media
 open Avalonia.FuncUI.Experiments.DSL.DSL
+open OpenEK.Core.EK
 open OpenEk.Avalonia
 open Types
 
@@ -13,13 +14,13 @@ let view (model: Model) dispatch =
         dockPanel {
             acrylicBorder {
                 isHitTestVisible false
-                material (ExperimentalAcrylicMaterial(TintColor = Colors.Black, MaterialOpacity = 0.85, TintOpacity = 1.))
+                material (ExperimentalAcrylicMaterial(TintColor = Colors.Black, MaterialOpacity = 0.80, TintOpacity = 1.))
                 dock Dock.Left
                 width 240.
             }
             acrylicBorder {
                 isHitTestVisible false
-                material (ExperimentalAcrylicMaterial(TintColor = Color.Parse("#222222"), MaterialOpacity = 0.85, TintOpacity = 1.))
+                material (ExperimentalAcrylicMaterial(TintColor = Color.Parse("#222222"), MaterialOpacity = 0.80, TintOpacity = 1.))
             }
         }
         
@@ -47,13 +48,10 @@ let view (model: Model) dispatch =
             border {
                 margin (Thickness(0., 2., 4., 0.))
                 
-                match model.IsConnected with
+                match Commands.bus.State.IsConnected with
                 | true -> UI.circleOnSymbol
                 | false -> UI.circleEmptySymbol
             }
-            label {
-                
-                "EK Connect"
-            }
+            label { "EK Connect" }
         }
     }

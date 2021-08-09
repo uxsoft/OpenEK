@@ -1,99 +1,97 @@
 module OpenEK.Core.EK.Commands
 
-open System.Drawing
-open System.Collections.Generic
-
 type EkCommand =
+    | GetFans
+    | GetPump
+    | GetLed
     | SetFansPwm of uint16
     | SetPumpPwm of uint16 
-    | SetLedColor of Color
+    | SetLedColor of byte * byte * byte
     | SetLedMode of LedMode
     | SetLedSpeed of byte
 
 type DeviceState =
-    {
-        Pump: FanData
-        Fans: Map<int, FanData>
-        LedMode: LedMode
-        LedColor: Color
-        LedSpeed: byte
-    }
+    { IsConnected: bool
+      Pump: FanData option
+      Fans: Map<int, FanData>
+      Led: LedData option }
     
-let emptyDeviceState =
-    {
-        Pump =
-            { Model = 0us
-              RatedSpeed = 0us
-              Speed = 0us
-              RatedPower = 0us
-              Power = 0us
-              Load = 0us
-              Pwm = 0us }
-
-        Fans = Map.empty<int, FanData>
-        LedMode = LedMode.Off
-        LedColor = Color.White
-        LedSpeed = 0uy
-    }
-
-let createQueue() = Queue<EkCommand>()
+let emptyState =
+    { IsConnected = false
+      Pump = None
+      Fans = Map.empty<int, FanData>
+      Led  = None }
 
 let getState () =
-    match Device.getLed() with
-    | None -> emptyDeviceState
-    | Some ledData ->
-        {
-            Fans = Device.getFans false
-            Pump = Device.getPump() |> Option.defaultValue Unchecked.defaultof<FanData>
-    
-    
-            LedMode = ledData.Mode
-            LedColor =
-                Color.FromArgb(
-                    int ledData.Brightness,
-                    int ledData.Red,
-                    int ledData.Green,
-                    int ledData.Blue)
-            LedSpeed = ledData.Speed
-        }
+    { IsConnected = Device.reconnect ()
+      Fans = Device.getFans false
+      Pump = Device.getPump()
+      Led = Device.getLed() }
 
 let sendCommand (state: DeviceState) (command: EkCommand) =
     match command with
+    | GetFans ->
+         let fans = Device.getFans false
+         { state with Fans = fans }
+         
+    | GetPump ->
+        let pump = Device.getPump ()
+        { state with Pump = pump }
+        
+    | GetLed ->
+        let ledData = Device.getLed ()
+        { state with Led = ledData }
+        
     | SetFansPwm pwm ->
         for fan in state.Fans do
             Device.setFan fan.Value (byte fan.Key) pwm
             |> ignore
-        state
+        { state with Fans = state.Fans |> Map.map (fun _ fan  -> { fan with Pwm = pwm }) }
                     
     | SetPumpPwm pwm ->
-        Device.setPump state.Pump pwm |> ignore
-        state
+        match state.Pump with
+        | None -> state
+        | Some pump -> 
+            Device.setPump pump pwm |> ignore
+            { state with Pump = Some { pump with Pwm = pwm } }
         
-    | SetLedColor color ->
-        Device.setLed state.LedMode state.LedSpeed color.A color.R color.G color.B
-        |> ignore
-        { state with LedColor = color }
+    | SetLedColor (r, g, b) ->
+        match state.Led with
+        | None -> state
+        | Some led ->
+            Device.setLed led.Mode led.Speed led.Brightness r g b |> ignore
+            { state with Led = Some { led with Red = r; Green = g; Blue = b } }
         
     | SetLedMode mode ->
-        Device.setLed mode state.LedSpeed state.LedColor.A state.LedColor.R state.LedColor.G state.LedColor.B
-        |> ignore
-        { state with LedMode = mode }
+        match state.Led with
+        | None -> state
+        | Some led ->
+            Device.setLed mode led.Speed led.Brightness led.Red led.Green led.Blue |> ignore
+            { state with Led = Some { led with Mode = mode } }
         
     | SetLedSpeed speed ->
-        Device.setLed state.LedMode speed state.LedColor.A state.LedColor.R state.LedColor.G state.LedColor.B
-        |> ignore
-        { state with LedSpeed = speed }
-
-let queueCommand (state: DeviceState) (onStateUpdated: DeviceState -> unit) (queue: Queue<EkCommand>) (command: EkCommand)  =
-    queue.Enqueue command
+        match state.Led with
+        | None -> state
+        | Some led ->
+            Device.setLed led.Mode speed led.Brightness led.Red led.Green led.Blue |> ignore
+            { state with Led = Some { led with Speed = speed } }
+            
+type EkConnectBus() =
     
-    if queue.Count = 1 then // If count is more than one then an existing loop is already running9
-        queue.Enqueue command
-
-        let mutable currentState = state
+    let onStateChanged = Event<DeviceState>()
+    let mutable state = getState()
+    
+    let agent = 
+        new MailboxProcessor<EkCommand>(fun inbox ->
+            async {
+                while true do
+                    let! message = inbox.Receive()
+                    state <- sendCommand state message
+                    onStateChanged.Trigger state
+            })
         
-        while queue.Count > 0 do
-            let currentCommand = queue.Peek()
-            currentState <- sendCommand currentState currentCommand
-            onStateUpdated currentState
-            queue.Dequeue() |> ignore
+    member _.State = state
+    member _.OnStateChanged = onStateChanged.Publish
+    member _.Send msg = agent.Post msg
+    
+let bus = EkConnectBus()

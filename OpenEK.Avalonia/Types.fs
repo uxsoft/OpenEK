@@ -1,7 +1,6 @@
 module OpenEk.Avalonia.Types
 
 open Elmish
-open OpenEK.Core
 open OpenEK.Core.EK
 open OpenEK.Core.System
 
@@ -25,34 +24,33 @@ let getInfo () =
 
 type Model =
     { CurrentPage: Page
-      Compute: ComputeInfo
-      IsConnected: bool
-      Fans: Map<int, FanData>
-      Pump: FanData option
-      Lights: LedData option }
+      Compute: ComputeInfo }
 
 type Msg =
     | Navigate of Page
     | UpdateComputeInfo
+    | OnDeviceStateChanged of Commands.DeviceState
     | UpdateFans 
     | UpdatePump
     | UpdateLights
 
 let init () : Model * Cmd<Msg> =
     
-    let isConnected = EK.Device.connect()
-    
     { CurrentPage = Page.Dashboard
-      Compute = getInfo()
-      IsConnected = isConnected
-      Fans = EK.Device.getFans false
-      Pump = EK.Device.getPump ()
-      Lights = EK.Device.getLed () }, []
+      Compute = getInfo() },
+    [ fun dispatch -> Event.add (OnDeviceStateChanged >> dispatch) Commands.bus.OnStateChanged ]
 
 let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
     match msg with
     | Navigate page -> { model with CurrentPage = page }, []
     | UpdateComputeInfo -> { model with Compute = getInfo() }, []
-    | UpdateFans -> { model with Fans = EK.Device.getFans false }, []
-    | UpdatePump -> { model with Pump = EK.Device.getPump () }, []
-    | UpdateLights -> { model with Lights = EK.Device.getLed () }, []
+    | OnDeviceStateChanged deviceState -> model, []
+    | UpdateFans ->
+        Commands.bus.Send Commands.EkCommand.GetFans
+        model, []
+    | UpdatePump ->
+        Commands.bus.Send Commands.EkCommand.GetPump
+        model, []
+    | UpdateLights ->
+        Commands.bus.Send Commands.EkCommand.GetLed
+        model, []

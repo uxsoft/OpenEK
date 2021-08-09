@@ -5,6 +5,7 @@ open Avalonia.Layout
 open Avalonia.Media
 open Avalonia.Media
 open Avalonia.Media.Immutable
+open OpenEK.Core.EK
 open OpenEk.Avalonia.Types
 open Avalonia.FuncUI.Experiments.DSL.DSL
 
@@ -12,9 +13,9 @@ open Avalonia.FuncUI.Experiments.DSL.DSL
 
 let view (model: Model) dispatch =
     grid {
+        margin (Thickness(20.))
         rowDefinitions "50, *"
         label {
-            margin (Thickness(20.))
             fontSize 24.
             "Dashboard"
         }
@@ -30,7 +31,7 @@ let view (model: Model) dispatch =
                 column 1
                 UI.statistic model.Compute.GpuName $"{model.Compute.GpuTemperature}°C"
             }
-            match model.Pump with
+            match Commands.bus.State.Pump with
             | None -> ()
             | Some pump ->
                 grid {
@@ -51,7 +52,7 @@ let view (model: Model) dispatch =
                 UI.refreshSymbol
             }
             
-            for fan in model.Fans do
+            for fan in Commands.bus.State.Fans do
                 border {
                     row 1
                     column fan.Key
@@ -63,9 +64,37 @@ let view (model: Model) dispatch =
                 label { "charts here" }
             }
             
-            border {
+            match Commands.bus.State.Fans |> Seq.tryHead with
+            | None -> label { () }
+            | Some fan -> 
+                stackPanel {
+                    column 0
+                    row 3
+                    UI.headerLabel "Fans"
+                    comboBox {
+                        selectedItem fan.Value.Pwm
+                        dataItems ([0..10] |> List.map ((*) 10))
+                    }
+                }
+
+            if Commands.bus.State.Pump.IsSome then
+                stackPanel {
+                    column 1
+                    row 3
+                    UI.headerLabel "Water Pump"
+                    comboBox {
+                        selectedItem Commands.bus.State.Pump.Value.Pwm
+                        dataItems ([0..10] |> List.map ((*) 10))
+                    }
+                }
+                
+            stackPanel {
+                column 3
                 row 3
-                label { "controls here" }
+                UI.headerLabel "AutoPilot"
+                checkBox {
+                    isChecked true
+                }
             }
         }
     }

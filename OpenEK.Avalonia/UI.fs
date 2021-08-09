@@ -5,9 +5,14 @@ open Avalonia.FuncUI.Experiments.DSL.DSL
 open Avalonia.Media
 open Avalonia.Media.Immutable
 
+let headerLabel title =
+    label {
+        margin (Thickness(0., 12., 0., 2.))
+        text title
+    }
+
 let statistic title value =
     stackPanel {
-        margin (Thickness(20.))
         label { text title }
         label {
             row 1
@@ -18,13 +23,16 @@ let statistic title value =
     
 let biStatistic title value subTitle =
     stackPanel {
-        margin (Thickness(20.))
-        label { text title }
+        label {
+            fontSize 14.
+            text title
+        }
         label {
             fontSize 24.
             text value
         }
         label {
+            fontSize 12.
             foreground (ImmutableSolidColorBrush Colors.Gray)
             text subTitle
         }

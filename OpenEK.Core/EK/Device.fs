@@ -11,7 +11,7 @@ let mutable isConnected = false
 let connect () =
     isConnected <-
         if PInvoke.InitEx(5) >= 0 then true
-        else if PInvoke.InitEx(3) >= 0 then true
+        elif PInvoke.InitEx(3) >= 0 then true
         else false
     isConnected
 

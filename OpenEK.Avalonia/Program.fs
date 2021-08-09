@@ -1,21 +1,21 @@
-﻿module FuncUI.Experiments.Program
+﻿module OpenEk.Avalonia.Program
 
+open System
 open System.Text.Json
 open System.Text.Json.Serialization
 open Avalonia.Controls
-open Avalonia.Media
-open Avalonia.Media.Immutable
 open Avalonia.Platform
-open Avalonia.Styling
+open Avalonia.Themes.Fluent
 open Elmish
 open Avalonia
 open Avalonia.Controls.ApplicationLifetimes
 open Avalonia.FuncUI
 open Avalonia.FuncUI.Elmish
 open Avalonia.FuncUI.Components.Hosts
-open OpenEK.Avalonia
+open OpenEK.Core
 open Live.Avalonia
 open OpenEk.Avalonia.Types
+
 
 let transferModel<'t> previousModel =
     try
@@ -44,7 +44,7 @@ let isProduction () =
 type MainControl(parent: Window) as this =
     inherit HostControl()
     do
-        OpenEK.Core.EK.Device.disconnect()
+        EK.Device.disconnect()
         
         let hotInit () =
             match transferModel<Model> parent.DataContext with
@@ -67,8 +67,7 @@ type App() =
             MainControl(window) :> obj
 
     override this.Initialize() =
-        this.Styles.Load "avares://Avalonia.Themes.Default/DefaultTheme.xaml"
-        this.Styles.Load "avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"
+        this.Styles.Add(FluentTheme(Uri("avares://Avalonia"), Mode = FluentThemeMode.Dark))
         this.Styles.Load "avares://OpenEk.Avalonia/Styles/SideBar.xaml"
 
     override this.OnFrameworkInitializationCompleted() =
