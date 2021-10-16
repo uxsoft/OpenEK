@@ -7,18 +7,18 @@ open Avalonia.Media
 open Avalonia.Media.Immutable
 open OpenEK.Core.EK
 open OpenEk.Avalonia.Types
-open Avalonia.FuncUI.Experiments.DSL.DSL
+open FUI.Avalonia.DSL
 
-let view (model: Model) dispatch =
-    grid {
+let view (model: Model) =
+    Grid {
         rowDefinitions "48, *"
-        label {
+        Label {
             margin (Thickness(20.))
             fontSize 24.
             "Illumination"
         }
         
-        button {
+        Button {
             row 1
             column 4
             width 32.
@@ -26,27 +26,28 @@ let view (model: Model) dispatch =
             verticalAlignment VerticalAlignment.Top
             horizontalAlignment HorizontalAlignment.Right
             margin (Thickness(20.))
-            onClick (fun _ -> dispatch UpdateLights)
+//TODO update for FUI
+//            onClick (fun _ -> dispatch UpdateLights)
             UI.refreshSymbol
         }
         
-        stackPanel {
+        StackPanel {
             row 1
             margin (Thickness(20.))
             
             match Commands.bus.State.Led with
-            | None -> label { "Failed to retrieve LED data" }
+            | None -> Label { "Failed to retrieve LED data" }
             | Some led -> 
                 let color = Color.FromRgb(led.Red, led.Green, led.Blue)
                 
                 UI.headerLabel "Mode"
-                comboBox {
-                    dataItems (Enum.GetNames<LedMode>())
+                ComboBox {
+                    items (Enum.GetNames<LedMode>())
                     selectedItem (string led.Mode)
                 }
                 
                 UI.headerLabel "Color" 
-                border {
+                Border {
                     horizontalAlignment HorizontalAlignment.Left
                     background (ImmutableSolidColorBrush color)
                     width 48.
@@ -54,9 +55,9 @@ let view (model: Model) dispatch =
                 }
                 
                 UI.headerLabel "Brightness" 
-                numberInput { value (double led.Brightness) }
+                NumberInput { value (double led.Brightness) }
                 
                 UI.headerLabel "Speed" 
-                numberInput { value (double led.Speed) }
+                NumberInput { value (double led.Speed) }
         }
     }

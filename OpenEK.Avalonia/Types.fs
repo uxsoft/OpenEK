@@ -35,25 +35,24 @@ type Msg =
     | UpdatePump
     | UpdateLights
 
-let init () : Model * Cmd<Msg> =
-    
+let init () =
     { CurrentPage = Page.Dashboard
       Compute = getInfo()
-      Device = Commands.emptyState },
-    [ fun dispatch -> Event.add (OnDeviceStateChanged >> dispatch) Commands.bus.OnStateChanged ]
+      Device = Commands.emptyState }
+    //TODO start [ fun dispatch -> Event.add (OnDeviceStateChanged >> dispatch) Commands.bus.OnStateChanged ]
 
-let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
-    match msg with
-    | Navigate page -> { model with CurrentPage = page }, []
-    | UpdateComputeInfo -> { model with Compute = getInfo() }, []
-    | OnDeviceStateChanged deviceState ->
-        { model with Device = deviceState }, []
-    | UpdateFans ->
-        Commands.bus.Send Commands.EkCommand.GetFans
-        model, []
-    | UpdatePump ->
-        Commands.bus.Send Commands.EkCommand.GetPump
-        model, []
-    | UpdateLights ->
-        Commands.bus.Send Commands.EkCommand.GetLed
-        model, []
+//let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
+//    match msg with
+//    | Navigate page -> { model with CurrentPage = page }, []
+//    | UpdateComputeInfo -> { model with Compute = getInfo() }, []
+//    | OnDeviceStateChanged deviceState ->
+//        { model with Device = deviceState }, []
+//    | UpdateFans ->
+//        Commands.bus.Send Commands.EkCommand.GetFans
+//        model, []
+//    | UpdatePump ->
+//        Commands.bus.Send Commands.EkCommand.GetPump
+//        model, []
+//    | UpdateLights ->
+//        Commands.bus.Send Commands.EkCommand.GetLed
+//        model, []

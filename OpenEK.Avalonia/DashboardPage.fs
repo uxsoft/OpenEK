@@ -4,70 +4,71 @@ open Avalonia
 open Avalonia.Layout
 open OpenEK.Core.EK
 open OpenEk.Avalonia.Types
-open Avalonia.FuncUI.Experiments.DSL.DSL
+open FUI.Avalonia.DSL
 
-let view (model: Model) dispatch =
-    grid {
+let view (model: Model) =
+    Grid {
         margin (Thickness(20.))
         rowDefinitions "50, *"
-        label {
+        Label {
             fontSize 24.
             "Dashboard"
         }
-        grid {
+        Grid {
             row 1
             columnDefinitions "*, *, *, *, *"
             rowDefinitions "*, *, *, *"
-            grid {
+            Grid {
                 column 0
                 UI.statistic model.Compute.CpuName $"{model.Compute.CpuTemperature}°C"
             }
-            grid {
+            Grid {
                 column 1
                 UI.statistic model.Compute.GpuName $"{model.Compute.GpuTemperature}°C"
             }
             match Commands.bus.State.Pump with
             | None -> ()
             | Some pump ->
-                grid {
+                Grid {
                     column 2
                     UI.biStatistic "PUMP" $"{pump.Pwm}%%" $"RPM: {pump.Speed}"
                 }
-            button {
+            Button {
                 column 4
                 width 32.
                 height 32.
                 verticalAlignment VerticalAlignment.Top
                 horizontalAlignment HorizontalAlignment.Right
                 margin (Thickness(20.))
-                onClick (fun _ ->
-                    dispatch UpdateComputeInfo
-                    dispatch UpdateFans
-                    dispatch UpdatePump)
+// TODO update for FUI
+//                onClick (fun _ ->
+//                    dispatch UpdateComputeInfo
+//                    dispatch UpdateFans
+//                    dispatch UpdatePump)
                 UI.refreshSymbol
             }
             
             for fan in Commands.bus.State.Fans do
-                border {
+                Border {
                     row 1
                     column fan.Key
                     UI.biStatistic $"FAN{fan.Key}" $"{fan.Value.Pwm}%%" $"RPM: {fan.Value.Speed}"
                 }
                 
-            border {
+            Border {
                 row 2
-                label { "charts here" }
+                Label { "charts here" }
             }
             
             match Commands.bus.State.Fans |> Seq.tryHead with
-            | None -> label { () }
+            | None -> Label { () }
             | Some fan -> 
-                stackPanel {
+                StackPanel {
                     column 0
                     row 3
                     UI.headerLabel "Fans"
-                    label { $"{fan.Value.Pwm}%%" }
-                    slider {
+                    Label { $"{fan.Value.Pwm}%%" }
+                    Slider {
                         margin (Thickness 2.)
                         minimum (float 0)
                         maximum (float 100)
@@ -77,14 +78,14 @@ let view (model: Model) dispatch =
                 }
 
             if Commands.bus.State.Pump.IsSome then
-                stackPanel {
+                StackPanel {
                     column 1
                     row 3
                     UI.headerLabel "Water Pump"
                     let pump = Commands.bus.State.Pump
                     
-                    label { $"{pump.Value.Pwm}%%" }
-                    slider {
+                    Label { $"{pump.Value.Pwm}%%" }
+                    Slider {
                         margin (Thickness 2.)
                         //minimum (float 0)
                         maximum (float 100)
@@ -93,11 +94,11 @@ let view (model: Model) dispatch =
                     }
                 }
                 
-            stackPanel {
+            StackPanel {
                 column 3
                 row 3
                 UI.headerLabel "AutoPilot"
-                checkBox {
+                CheckBox {
                     isChecked true
                 }
             }

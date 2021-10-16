@@ -4,54 +4,50 @@ open Avalonia
 open Avalonia.Controls
 open Avalonia.Layout
 open Avalonia.Media
-open Avalonia.FuncUI.Experiments.DSL.DSL
+open FUI.Avalonia.DSL
 open OpenEK.Core.EK
 open OpenEk.Avalonia
 open Types
 
-let view (model: Model) dispatch =
-    grid {
-        dockPanel {
-            acrylicBorder {
+let view (model: Model) =
+    Grid {
+        DockPanel {
+            AcrylicBorder {
                 isHitTestVisible false
                 material (ExperimentalAcrylicMaterial(TintColor = Colors.Black, MaterialOpacity = 0.80, TintOpacity = 1.))
                 dock Dock.Left
                 width 240.
             }
-            acrylicBorder {
+            AcrylicBorder {
                 isHitTestVisible false
                 material (ExperimentalAcrylicMaterial(TintColor = Color.Parse("#222222"), MaterialOpacity = 0.80, TintOpacity = 1.))
             }
         }
         
-        tabControl {
+        TabControl {
             classes ["sidebar"]
 
-            tabItem {
+            TabItem {
                 header "Dashboard"
-                isSelected (model.CurrentPage = Page.Dashboard)
-                onTapped (fun _ -> dispatch (Navigate Page.Dashboard))
-                DashboardPage.view model dispatch
+                DashboardPage.view model
             }
-            tabItem {
+            TabItem {
                 header "Illumination"
-                isSelected (model.CurrentPage = Page.Illumination)
-                onTapped (fun _ -> dispatch (Navigate Page.Illumination))
-                IlluminationPage.view model dispatch
+                IlluminationPage.view model
             }
         }
 
-        stackPanel {
+        StackPanel {
             orientation Orientation.Horizontal
             margin (Thickness(6.))
             
-            border {
+            Border {
                 margin (Thickness(0., 2., 4., 0.))
                 
                 match Commands.bus.State.IsConnected with
-                | true -> UI.circleOnSymbol
-                | false -> UI.circleEmptySymbol
+                | true -> UI.circleOnSymbol()
+                | false -> UI.circleEmptySymbol()
             }
-            label { "EK Connect" }
+            Label { "EK Connect" }
         }
     }

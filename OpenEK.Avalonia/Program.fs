@@ -1,98 +1,66 @@
 ﻿module OpenEk.Avalonia.Program
 
 open System
-open System.Text.Json
-open System.Text.Json.Serialization
+open Avalonia
 open Avalonia.Controls
+open Avalonia.Controls.Presenters
+open Avalonia.Controls.ApplicationLifetimes
+open Avalonia.Markup.Xaml.Styling
+open Avalonia.Media
 open Avalonia.Platform
 open Avalonia.Themes.Fluent
-open Elmish
-open Avalonia
-open Avalonia.Controls.ApplicationLifetimes
-open Avalonia.FuncUI
-open Avalonia.FuncUI.Elmish
-open Avalonia.FuncUI.Components.Hosts
-open OpenEK.Core
-open Live.Avalonia
-open OpenEk.Avalonia.Types
+open Avalonia.Threading
+open FUI.Avalonia.DSL
+open FUI.HotReload.HotReload
 
-
-let transferModel<'t> previousModel =
-    try
-        let options = JsonSerializerOptions()
-        options.Converters.Add(JsonFSharpConverter())
-        
-        let json = JsonSerializer.Serialize(previousModel, options)
-        let model = JsonSerializer.Deserialize<'t>(json, options)
-        
-        match box model with
-        | null -> failwith "Failed to transfer model"
-        | _ ->
-            printf $"Successfully transferred model: {model}"
-            Some (model, [])
-    with err ->
-        printfn $"{err}"
-        None
-
-let isProduction () =
-    #if false // DEBUG
-        false
-    #else
-        true
-    #endif
+type Hot() as this =
+    inherit ContentPresenter()
     
-type MainControl(parent: Window) as this =
-    inherit HostControl()
-    do
-        EK.Device.disconnect()
-        
-        let hotInit () =
-            match transferModel<Model> parent.DataContext with
-            | Some newState -> newState
-            | None -> init ()
-        
-        Elmish.Program.mkProgram hotInit update App.view
-        |> Program.withHost this
-        |> Program.withTrace (fun msg model ->
-            printfn $"Message: {msg}"
-            printfn $"Model: {model}"
-            parent.DataContext <- model)
-        |> Program.run
+    let model = Types.init()
+    do this.Content <- App.view model
+    
+    interface IHotReloadable with
+        member this.Accept(old) =
+            // hydrated accepts current
+            let m = transferModel (old.GetModel()) Types.init // Transfer existing model data to new model type
+            let v = App.view m // Build UI using new view
+            old.SetView v // Use old container to host new UI
+            
+        member this.GetModel() =
+            box model
+                    
+        member this.SetView(view) =
+            this.Content <- view
 
+let createMainWindow () =    
+    let hot = Hot()
+    let disposables = hotReload hot AvaloniaScheduler.Instance
+    
+    Window {
+        height 800.
+        width 800.
+        title "Open EK Connect"
+        transparencyLevelHint WindowTransparencyLevel.Transparent
+        systemDecorations SystemDecorations.Full
+        extendClientAreaToDecorationsHint true
+        extendClientAreaTitleBarHeightHint -1.
+        extendClientAreaChromeHints ExtendClientAreaChromeHints.PreferSystemChrome
+        background null //(SolidColorBrush(Colors.Transparent))
+        onWindowClosed (fun _ -> for d in disposables do d.Dispose())
+
+        hot
+    }
+        
 type App() =
     inherit Application()
-    
-    interface ILiveView with
-        member _.CreateView(window: Window) =
-            MainControl(window) :> obj
-
     override this.Initialize() =
-        this.Styles.Add(FluentTheme(Uri("avares://Avalonia"), Mode = FluentThemeMode.Dark))
-        this.Styles.Load "avares://OpenEk.Avalonia/Styles/SideBar.xaml"
+        this.Styles.Add(FluentTheme(baseUri = null, Mode = FluentThemeMode.Dark))
+        this.Styles.Add(StyleInclude(baseUri = null, Source = Uri("avares://OpenEk.Avalonia/Styles/SideBar.xaml")))
 
     override this.OnFrameworkInitializationCompleted() =
         match this.ApplicationLifetime with
-        | :? IClassicDesktopStyleApplicationLifetime as desktopLifetime ->
-            let window =
-                if isProduction() then
-                    let window = new LiveViewHost(this, fun msg -> printfn $"%s{msg}")
-                    window.StartWatchingSourceFilesForHotReloading()
-                    window :> Window
-                else
-                    let window = Window()
-                    window.Content <- MainControl(window)
-                    window                    
-            
-            window.Title <- "Open EK Connect"
-            window.TransparencyLevelHint <- WindowTransparencyLevel.AcrylicBlur
-            window.SystemDecorations <- SystemDecorations.Full
-            window.ExtendClientAreaToDecorationsHint <- true
-            window.ExtendClientAreaTitleBarHeightHint <- -1.
-            window.ExtendClientAreaChromeHints <- ExtendClientAreaChromeHints.PreferSystemChrome
-            window.Background <- null
-            window.Show()
-            
-            base.OnFrameworkInitializationCompleted()
+        | :? IClassicDesktopStyleApplicationLifetime as desktopLifetime ->            
+            desktopLifetime.MainWindow <- createMainWindow()
         | _ -> ()
 
 [<EntryPoint>]

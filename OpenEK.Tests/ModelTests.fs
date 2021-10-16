@@ -46,16 +46,16 @@ type ModelTests () =
               LastBlue = 14uy
               Reserve0 = 15uy }
 
+        let device =
+            Commands.getState()
+        
         let fans =
             [ 1, fan ] |> Map.ofList
         
         let expected =
             { CurrentPage = Page.Illumination
               Compute = compute
-              IsConnected = true
-              Fans = fans
-              Pump = None
-              Lights = Some led }
+              Device = device }
         
         let options = JsonSerializerOptions()
         options.Converters.Add(JsonFSharpConverter())
