@@ -89,7 +89,9 @@ type EkConnectBus() =
                     state <- sendCommand state message
                     onStateChanged.Trigger state
             })
-        
+    
+    do agent.Start()
+    
     member _.State = state
     member _.OnStateChanged = onStateChanged.Publish
     member _.Send msg = agent.Post msg

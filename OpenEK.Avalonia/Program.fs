@@ -23,7 +23,7 @@ let transferModel<'t> previousModel =
         options.Converters.Add(JsonFSharpConverter())
         
         let json = JsonSerializer.Serialize(previousModel, options)
-        let model = JsonSerializer.Deserialize<Model>(json, options)
+        let model = JsonSerializer.Deserialize<'t>(json, options)
         
         match box model with
         | null -> failwith "Failed to transfer model"

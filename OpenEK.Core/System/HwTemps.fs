@@ -10,11 +10,11 @@ type TempInfo =
       Gpu: float list
       GpuAdjusted: float list }
 
-let empty = {
-    Cpu = []
-    CpuAdjusted = []
-    Gpu = []
-    GpuAdjusted = [] }
+let empty =
+    { Cpu = []
+      CpuAdjusted = []
+      Gpu = []
+      GpuAdjusted = [] }
 
 let hysteresis (values: float list) =
     if values.Length <= 1 then

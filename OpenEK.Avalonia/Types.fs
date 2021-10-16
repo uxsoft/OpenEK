@@ -24,7 +24,8 @@ let getInfo () =
 
 type Model =
     { CurrentPage: Page
-      Compute: ComputeInfo }
+      Compute: ComputeInfo
+      Device: Commands.DeviceState }
 
 type Msg =
     | Navigate of Page
@@ -37,14 +38,16 @@ type Msg =
 let init () : Model * Cmd<Msg> =
     
     { CurrentPage = Page.Dashboard
-      Compute = getInfo() },
+      Compute = getInfo()
+      Device = Commands.emptyState },
     [ fun dispatch -> Event.add (OnDeviceStateChanged >> dispatch) Commands.bus.OnStateChanged ]
 
 let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
     match msg with
     | Navigate page -> { model with CurrentPage = page }, []
     | UpdateComputeInfo -> { model with Compute = getInfo() }, []
-    | OnDeviceStateChanged deviceState -> model, []
+    | OnDeviceStateChanged deviceState ->
+        { model with Device = deviceState }, []
     | UpdateFans ->
         Commands.bus.Send Commands.EkCommand.GetFans
         model, []

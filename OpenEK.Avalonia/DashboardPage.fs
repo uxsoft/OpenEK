@@ -2,14 +2,9 @@ module OpenEk.Avalonia.DashboardPage
 
 open Avalonia
 open Avalonia.Layout
-open Avalonia.Media
-open Avalonia.Media
-open Avalonia.Media.Immutable
 open OpenEK.Core.EK
 open OpenEk.Avalonia.Types
 open Avalonia.FuncUI.Experiments.DSL.DSL
-
-
 
 let view (model: Model) dispatch =
     grid {
@@ -71,9 +66,13 @@ let view (model: Model) dispatch =
                     column 0
                     row 3
                     UI.headerLabel "Fans"
-                    comboBox {
-                        selectedItem fan.Value.Pwm
-                        dataItems ([0..10] |> List.map ((*) 10))
+                    label { $"{fan.Value.Pwm}%%" }
+                    slider {
+                        margin (Thickness 2.)
+                        minimum (float 0)
+                        maximum (float 100)
+                        value (float fan.Value.Pwm)
+                        onValueChanged (uint16 >> Commands.EkCommand.SetFansPwm >> Commands.bus.Send) 
                     }
                 }
 
@@ -82,9 +81,15 @@ let view (model: Model) dispatch =
                     column 1
                     row 3
                     UI.headerLabel "Water Pump"
-                    comboBox {
-                        selectedItem Commands.bus.State.Pump.Value.Pwm
-                        dataItems ([0..10] |> List.map ((*) 10))
+                    let pump = Commands.bus.State.Pump
+                    
+                    label { $"{pump.Value.Pwm}%%" }
+                    slider {
+                        margin (Thickness 2.)
+                        //minimum (float 0)
+                        maximum (float 100)
+                        value (float pump.Value.Pwm)
+                        onValueChanged (uint16 >> Commands.EkCommand.SetPumpPwm >> Commands.bus.Send) 
                     }
                 }
                 
