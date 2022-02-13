@@ -1,8 +1,9 @@
 module OpenEk.Avalonia.Types
 
 open Elmish
-open OpenEK.Core.EK
-open OpenEK.Core.System
+open OpenEk.Core.EK
+open OpenEk.Core.System
+open FUI.ObservableValue
 
 type Page =
     | Dashboard = 0
@@ -23,21 +24,11 @@ let getInfo () =
       GpuTemperature = HwInfo.getGpuTemperature computer "GPU Core" }
 
 type Model =
-    { CurrentPage: Page
-      Compute: ComputeInfo
+    { Compute: ComputeInfo var
       Device: Commands.DeviceState }
 
-type Msg =
-    | Navigate of Page
-    | UpdateComputeInfo
-    | OnDeviceStateChanged of Commands.DeviceState
-    | UpdateFans 
-    | UpdatePump
-    | UpdateLights
-
 let init () =
-    { CurrentPage = Page.Dashboard
-      Compute = getInfo()
+    { Compute = var (getInfo())
       Device = Commands.emptyState }
     //TODO start [ fun dispatch -> Event.add (OnDeviceStateChanged >> dispatch) Commands.bus.OnStateChanged ]
 

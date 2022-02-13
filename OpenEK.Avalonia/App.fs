@@ -4,8 +4,9 @@ open Avalonia
 open Avalonia.Controls
 open Avalonia.Layout
 open Avalonia.Media
+open FUI
 open FUI.Avalonia.DSL
-open OpenEK.Core.EK
+open OpenEk.Core.EK
 open OpenEk.Avalonia
 open Types
 
@@ -44,9 +45,10 @@ let view (model: Model) =
             Border {
                 margin (Thickness(0., 2., 4., 0.))
                 
-                match Commands.bus.State.IsConnected with
-                | true -> UI.circleOnSymbol()
-                | false -> UI.circleEmptySymbol()
+                Commands.bus.State.IsConnected
+                |> Ov.map (function
+                    | true -> UI.circleOnSymbol()
+                    | false -> UI.circleEmptySymbol())
             }
             Label { "EK Connect" }
         }

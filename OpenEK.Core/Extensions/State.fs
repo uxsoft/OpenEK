@@ -1,4 +1,4 @@
-﻿namespace OpenEK.Core
+﻿namespace OpenEk.Core
 
 open System.ComponentModel
 

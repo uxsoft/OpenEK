@@ -1,4 +1,4 @@
-module OpenEK.Core.System.HwInfo
+module OpenEk.Core.System.HwInfo
 
 open System.Linq
 open LibreHardwareMonitor.Hardware

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31213.239
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "OpenEK.Tests", "OpenEK.Tests\OpenEK.Tests.fsproj", "{42C4B8C4-49C5-4AA4-A3F5-E1AA814F7862}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "OpenEk.Tests", "OpenEk.Tests\OpenEk.Tests.fsproj", "{42C4B8C4-49C5-4AA4-A3F5-E1AA814F7862}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEK.Core", "OpenEK.Core\OpenEK.Core.fsproj", "{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEk.Core", "OpenEk.Core\OpenEk.Core.fsproj", "{B30F50C4-BF30-44CC-A4A8-568AF17C9BC6}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEk.Avalonia", "OpenEK.Avalonia\OpenEk.Avalonia.fsproj", "{66954801-FCCA-4ABB-802D-CB798D986E78}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpenEk.Avalonia", "OpenEk.Avalonia\OpenEk.Avalonia.fsproj", "{66954801-FCCA-4ABB-802D-CB798D986E78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

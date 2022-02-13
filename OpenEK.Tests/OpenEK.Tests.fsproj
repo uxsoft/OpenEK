@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="5.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -22,11 +22,12 @@
   
   <ItemGroup>
     <Compile Include="ModelTests.fs" />
+    <Compile Include="CommandTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\OpenEK.Avalonia\OpenEk.Avalonia.fsproj" />
-    <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />
+    <ProjectReference Include="..\OpenEk.Avalonia\OpenEk.Avalonia.fsproj" />
+    <ProjectReference Include="..\OpenEk.Core\OpenEk.Core.fsproj" />
   </ItemGroup>
 </Project>

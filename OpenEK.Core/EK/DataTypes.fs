@@ -1,4 +1,4 @@
-namespace OpenEK.Core.EK
+namespace OpenEk.Core.EK
 
 open System.Drawing
 open System.Runtime.InteropServices

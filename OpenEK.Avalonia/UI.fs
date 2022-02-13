@@ -4,6 +4,7 @@ open Avalonia
 open FUI.Avalonia.DSL
 open Avalonia.Media
 open Avalonia.Media.Immutable
+open FUI.UiBuilder
 
 let headerLabel title =
     Label {

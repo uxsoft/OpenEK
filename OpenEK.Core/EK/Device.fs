@@ -1,4 +1,4 @@
-﻿module OpenEK.Core.EK.Device
+﻿module OpenEk.Core.EK.Device
 
 open System
 open System.Diagnostics

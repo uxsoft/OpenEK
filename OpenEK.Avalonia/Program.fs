@@ -6,10 +6,8 @@ open Avalonia.Controls
 open Avalonia.Controls.Presenters
 open Avalonia.Controls.ApplicationLifetimes
 open Avalonia.Markup.Xaml.Styling
-open Avalonia.Media
 open Avalonia.Platform
 open Avalonia.Themes.Fluent
-open Avalonia.Threading
 open FUI.Avalonia.DSL
 open FUI.HotReload.HotReload
 
@@ -34,7 +32,7 @@ type Hot() as this =
 
 let createMainWindow () =    
     let hot = Hot()
-    let disposables = hotReload hot AvaloniaScheduler.Instance
+    let disposables : IDisposable list = [] //hotReload hot AvaloniaScheduler.Instance
     
     Window {
         height 800.

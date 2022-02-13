@@ -16,14 +16,14 @@
     </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.8" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.12" />
     <PackageReference Include="Elmish" Version="3.1.0" />
-    <PackageReference Include="FSharp.Stats" Version="0.4.2" />
+    <PackageReference Include="FSharp.Stats" Version="0.4.3" />
     <PackageReference Include="FSharp.SystemTextJson" Version="0.17.4" />
-    <PackageReference Include="FUI.Avalonia" Version="1.86.0" />
+    <PackageReference Include="FUI.Avalonia" Version="1.91.0" />
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
     <PackageReference Include="Ply" Version="0.3.1" />
-    <PackageReference Update="FSharp.Core" Version="6.0.0" />
+    <PackageReference Update="FSharp.Core" Version="6.0.3" />
   </ItemGroup>
 
     <ItemGroup>
@@ -37,6 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\OpenEK.Core\OpenEK.Core.fsproj" />
+        <ProjectReference Include="..\OpenEk.Core\OpenEk.Core.fsproj" />
     </ItemGroup>
 </Project>

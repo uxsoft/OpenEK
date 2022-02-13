@@ -1,4 +1,4 @@
-module OpenEK.Core.System.HwTemps
+module OpenEk.Core.System.HwTemps
 
 open System
 open FSharp.Stats

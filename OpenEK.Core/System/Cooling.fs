@@ -1,7 +1,7 @@
-module OpenEK.Core.System.Cooling
+module OpenEk.Core.System.Cooling
 
 open System
-open OpenEK.Core.EK.Commands
+open OpenEk.Core.EK.Commands
 
 let stepCurve (tAmbient: float) (tMax: float) (tNow: float) : uint16 =
     match tNow with

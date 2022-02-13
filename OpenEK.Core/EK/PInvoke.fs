@@ -1,4 +1,4 @@
-module OpenEK.Core.EK.PInvoke
+module OpenEk.Core.EK.PInvoke
 
 open System.Runtime.InteropServices
 
