@@ -23,10 +23,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FSharp.Stats" Version="0.4.3" />
+		<PackageReference Include="FSharp.Stats" Version="0.4.7" />
 		<PackageReference Include="FUI" Version="1.91.0" />
 		<PackageReference Include="LibreHardwareMonitorLib" Version="0.8.7" />
-		<PackageReference Update="FSharp.Core" Version="6.0.3" />
+		<PackageReference Update="FSharp.Core" Version="6.0.4" />
 	</ItemGroup>
 
 </Project>

@@ -7,7 +7,6 @@ open System.Text
 
 let mutable isConnected = false 
 
-[<HandleProcessCorruptedStateExceptions>]
 let connect () =
     isConnected <-
         if PInvoke.InitEx(5) >= 0 then true
@@ -15,7 +14,7 @@ let connect () =
         else false
     isConnected
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let disconnect () =
     if isConnected then
         PInvoke.Release() |> ignore
@@ -25,7 +24,7 @@ let reconnect () =
     if isConnected then disconnect()
     connect()
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getHardwareVersion() =
     try
         if isConnected then
@@ -44,7 +43,7 @@ let getHardwareVersion() =
         Trace.WriteLine e
         String.Empty
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getSoftwareVersion () =
     try
         if isConnected then
@@ -63,7 +62,7 @@ let getSoftwareVersion () =
         Trace.WriteLine e
         String.Empty
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getMh () =
     try
         if isConnected then
@@ -82,7 +81,7 @@ let getMh () =
         Trace.WriteLine e
         String.Empty
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getFan port =
     try
         if isConnected then
@@ -103,7 +102,7 @@ let getFan port =
         Trace.WriteLine(e)
         None
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getFans (includePump: bool) =
     let fanCount = if includePump then 6 else 5
 
@@ -118,7 +117,7 @@ let getFans (includePump: bool) =
     |> List.map (fun (i, data) -> (i, Option.get data))
     |> Map.ofList
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let setFan (fan: FanData) port pwm =
     try
         if isConnected then
@@ -128,7 +127,7 @@ let setFan (fan: FanData) port pwm =
         Trace.WriteLine(e)
         -1
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getPump () =
     try
         if isConnected then
@@ -156,7 +155,7 @@ let getPump () =
 /// <param name="pump">Previously retrieved pump data using getPump. All of this data will be written to the device with the new pwm. </param>
 /// <param name="pwm">Value between 0 and 100</param>
 /// <returns></returns>
-[<HandleProcessCorruptedStateExceptions>]
+
 let setPump (pump: FanData) pwm =
     try
         if isConnected then
@@ -164,7 +163,7 @@ let setPump (pump: FanData) pwm =
         else 0
     with e -> -1
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getLed() =
     try
         if isConnected then
@@ -199,7 +198,7 @@ let getLed() =
         Trace.WriteLine(e)
         None
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let setLed (mode: LedMode) speed brightness red green blue =
     try
         let color =
@@ -217,7 +216,7 @@ let setLed (mode: LedMode) speed brightness red green blue =
         Trace.WriteLine(e)
         -1
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getTemperature port =
     try
         if isConnected then
@@ -234,7 +233,7 @@ let getTemperature port =
         Trace.WriteLine e
         -1
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getLevel () =
     try
         if isConnected then
@@ -251,7 +250,7 @@ let getLevel () =
         Trace.WriteLine e
         -1
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let getSensors () =
     try
         if isConnected then
@@ -277,7 +276,7 @@ let getSensors () =
         Trace.WriteLine e
         None
 
-[<HandleProcessCorruptedStateExceptions>]
+
 let send (buffer: byte array) =
     try
         if isConnected then

@@ -29,7 +29,10 @@ let getCpuTemperature (computer: Computer) sensorName =
             s.SensorType = SensorType.Temperature && 
             s.Name = sensorName);
     
-    sensor.Value |> Option.ofNullable |> Option.defaultValue 0.f
+    sensor
+        |> Option.ofObj
+        |> Option.bind (fun s -> Option.ofNullable s.Value)
+        |> Option.defaultValue 0.f
 
 let getGpu (computer: Computer) =
     computer.Hardware.SingleOrDefault(fun hw -> 
@@ -48,4 +51,7 @@ let getGpuTemperature (computer: Computer) sensorName =
         s.SensorType = SensorType.Temperature && 
         s.Name = sensorName)
     
-    sensor.Value |> Option.ofNullable |> Option.defaultValue 0.f
+    sensor
+        |> Option.ofObj
+        |> Option.bind (fun s -> Option.ofNullable s.Value)
+        |> Option.defaultValue 0.f
